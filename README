@@ -1,0 +1,9 @@
+Author　Nachi Ueno <nati.ueno@gmail.com>
+
+ * Copyright 2011, Nachi Ueno <nati.ueno@gmail.com>
+ * Dual licensed under the MIT or GPL Version 2 licenses
+
+sinsai.info用のOpenSocialガジェットです
+現在は、igoogleでしかテストしていません
+sinsai.info専用のAPIをつかっているので、ushahidiでは動きません
+
