@@ -109,8 +109,8 @@ label {
 <script language="javascript">
 var map;
 var proj_4326 = new OpenLayers.Projection('EPSG:4326');
-var lon = 140.48981665651;
-var lat = 37.609377136228;
+var longitude = 140.48981665651;
+var latitude = 37.609377136228;
 var defaultZoom = 6;
 var endpoint = "http://www.sinsai.info/ushahidi/";
 
@@ -158,51 +158,58 @@ $(function($,data) {
     var searchLayer = "検索結果";
     var renderIncidents = function (data){
        $('#wrapper').render({ incidents: data }).show();
+       
        var searchMaker = new OpenLayers.Layer.Markers(searchLayer);
-       if(!data){
-          return;
-       }
-       $.each(data,function(){ 
+       var markers = map.getLayersByName(searchLayer);
+        if (markers && markers.length > 0)
+        {
+	        for (var i = 0; i < markers.length; i++)
+	        {
+		        map.removeLayer(markers[i]);
+	        }
+        }
+       map.addLayer(searchMaker);
+           //$.log($.toJSON(data));
+      $.each(data,function(){ 
            var incident = this.incident;
            var place = ushahidi.lonlat4326(incident.locationlongitude,incident.locationlatitude);
            var icon = ushahidi.icon(ushahidi.catICON[this.categories[0].category.id]);
            var marker = new OpenLayers.Marker(place, icon);
-            markers = map.getLayersByName(searchLayer);
-			if (markers && markers.length > 0)
-			{
-				for (var i = 0; i < markers.length; i++)
-				{
-					map.removeLayer(markers[i]);
-				}
-			}
 			searchMaker.addMarker(marker);
        });
-       map.addLayer(searchMaker);
     }
+           
+        
     function mapEvent(event) {
+        $.log("map move");
         var center = map.getCenter();
         var zoom = map.zoom;
-        $("#distance").val(zoom);
-        var distance = ushahidi.zoom2Distance(zoom);
-        if(distance == undefined){
-            return;
-        }
+        $.log("center:" + center.transform(map.getProjectionObject(),
+            new OpenLayers.Projection("EPSG:4326")));
+        $("#zoom").val(zoom);
+        var bound = map.getExtent().transform(map.getProjectionObject(),
+            new OpenLayers.Projection("EPSG:4326"));
+        southwest = bound .left+','+bound .bottom;
+        northeast = bound.right+','+bound .top;
+        $.log(southwest + "," + northeast);
+        ushahidi.incidentsByBounds(center,southwest,northeast,$("#keyword").val(),$("input[name=catID]:checked").val(),renderIncidents);
         ushahidi.lonlat2Address(center,function(address){
             if(address){
                 $("#address").val(address);
             }
-            $.log("Address" + address);
         });
-        ushahidi.addMarkers("", "", "", zoom, center);  
+
     }
+
     map = new OpenLayers.Map({
         div: "map",
         allOverlays: true,
         eventListeners: {
             "moveend": mapEvent,
-            "zoomend": mapEvent,
+            //"zoomend": mapEvent,
         }
     });
+
     
     
     var layout = $('body').layout({
@@ -226,12 +233,12 @@ $(function($,data) {
     
     map.addControl(new OpenLayers.Control.LayerSwitcher());
     map.zoomToMaxExtent();
-    var lonlat = ushahidi.lonlat4326(lon,lat);
+    var lonlat = ushahidi.lonlat4326(longitude,latitude);
     map.setCenter(lonlat, defaultZoom);
     $.each(ushahidi.zoomLevel, function(key){
         var value = this;
         var selected = key == defaultZoom ? "selected" : "" ;
-        $("#distance").prepend("<option value='"+ key +"' " + selected +  " >" + ushahidi.zoom2DistanceLabel(key) + "</option>");
+        $("#zoom").prepend("<option value='"+ key +"' " + selected +  " >" + ushahidi.zoom2DistanceLabel(key) + "</option>");
     });
     ushahidi.category(function(json){
         var index = 2;
@@ -254,16 +261,15 @@ $(function($,data) {
     
     
     $("#search").submit(function(){
+        $.log("test");
         ushahidi.address2Lonlat($("#address").val(),function(lonlat){
-            $.log($("#distance").val());
-            $.log("search" + lonlat + " " + ushahidi.zoom2Distance($("#distance").val())/1000 + " keyword " + $("#keyword").val() + " catID " + $("input[name=catID]:checked").val());
-            ushahidi.incidentsByKeyword(lonlat,ushahidi.zoom2Distance($("#distance").val())/1000,$("#keyword").val(),$("input[name=catID]:checked").val(),renderIncidents);
-            map.setCenter(ushahidi.lonlat4326(lonlat.lon,lonlat.lat), $("#distance").val());
+            $.log(lonlat);
+            map.setCenter(ushahidi.lonlat(lonlat.lon,lonlat.lat), $("#zoom").val());
         });
         return false;
     });
     
-    ushahidi.allIncidents(renderIncidents);
+   // ushahidi.allIncidents(renderIncidents);
 });
 </script>
 <DIV class="ui-layout-center">
@@ -296,7 +302,7 @@ ${Cur.incident.incidenttitle } ${Cur.incident.locationlongitude } ${Cur.incident
 <label>住所</label><input type="text" size="40" id="address"/>
 </div>
 <div class="field">
-<label>半径</label><select id="distance"/>
+<label>縮尺</label><select id="zoom"/>
 </div>
 <div class="field">
 <label>キーワード</label><input type="text" size="40" id="keyword"/>

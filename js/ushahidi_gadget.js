@@ -65,7 +65,25 @@ $.ushahidi = function(options) {
             callback(json.payload.incidents);
         });
     }
-    
+
+
+    ushahidiAPI.prototype.incidentsByBounds = function(lonlat,sw,ne,keyword,catID,callback){
+        if(!catID){
+            catID = 0;
+        }
+        if(!keyword){
+            keyword = "";
+        }else{
+            keyword  = encodeURI(keyword);
+        }
+        var lonlat = lonlat.transform(map.getProjectionObject(),proj_4326);
+        var API = setting.endpoint + 'api?task=incidents&by=bounds&orderfield=incidentdate&limit=' + setting.limit + "&sw=" + encodeURI(sw) + "&ne=" + encodeURI(ne) + "&keyword=" + keyword + "&c=" + catID;
+        $.log(API);
+        $.getJSON(API, {}, function(json) {
+            callback(json.payload.incidents);
+        });
+    };
+
     ushahidiAPI.prototype.incidentsByKeyword = function(lonlat,distance,keyword,catID,callback){
         if(!catID){
             catID = 0;
