@@ -143,77 +143,84 @@ div.incident div.description{
 <script src="http://nati.sinsai.info/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/ushahidi_gadget.js"></script> 
 <script language="javascript">
+
 var map;
 var proj_4326 = new OpenLayers.Projection('EPSG:4326');
 var longitude = 140.48981665651;
 var latitude = 37.609377136228;
 var defaultZoom = 6;
 var endpoint = "http://www.sinsai.info/ushahidi/";
+var offset = 0;
+var limit = 300;
+var searchLayer = "検索結果";
+var ushahidi;
 
 $.log = function(msg){
     $("#debug").html(msg + "<br>" +  $("#debug").html());
 }
 
-$(function($,data) {
-    var ushahidi = $.ushahidi({"endpoint":endpoint});
-    var searchLayer = "検索結果";
-    var renderIncidents = function (data){
-       var searchMaker = new OpenLayers.Layer.Markers(searchLayer);
-       var markers = map.getLayersByName(searchLayer);
-        if (markers && markers.length > 0)
+function renderIncidents(data,offset){
+    var searchMaker = new OpenLayers.Layer.Markers(searchLayer);
+    map.addLayer(searchMaker);
+    $.each(data,function(){ 
+        var incident = this.incident;
+        var place = ushahidi.lonlat4326(incident.locationlongitude,incident.locationlatitude);
+        var icon = ushahidi.icon(ushahidi.catICON[this.categories[0].category.id]);
+        var marker = new OpenLayers.Marker(place, icon);
+        incident.categories = [];
+        $.each(this.categories,function(){
+            incident.categories.push({url:ushahidi.catICON[this.category.id]});
+        });
+        searchMaker.addMarker(marker);
+    });
+   var clone = $("#incidents_template").clone();
+   clone.attr("id","incidents" + offset);
+   $("#holder").append(clone);
+   $('#incidents' + offset).render({ incidents: data }).show();
+   $(".description").hide();
+   $(".incident").each(function () {
+        var flip = 0;
+        var description = $(".description",this);
+        var body = description.html() ;
+        body = body.replace(/\r\n/g, "<br/>");
+        body = body.replace(/(\n|\r)/g, "<br/>");
+        description.html(body);
+        $(".title",this).click(function(){
+            description.toggle( flip++ % 2 == 0 );
+        });
+    });
+}
+
+function mapEvent(event) {
+    var center = map.getCenter();
+    var zoom = map.zoom;
+    ushahidi.lonlat2Address(center,function(address){
+            $("#address").val(address);
+    });
+    $("#zoom").val(zoom);
+    var bound = map.getExtent().transform(map.getProjectionObject(),
+        new OpenLayers.Projection("EPSG:4326"));
+    southwest = bound .left+','+bound .bottom;
+    northeast = bound.right+','+bound .top;
+    var markers = map.getLayersByName(searchLayer);
+    if (markers && markers.length > 0)
+    {
+        for (var i = 0; i < markers.length; i++)
         {
-	        for (var i = 0; i < markers.length; i++)
-	        {
-		        map.removeLayer(markers[i]);
-	        }
+            map.removeLayer(markers[i]);
         }
-       map.addLayer(searchMaker);
-           
-      $.each(data,function(){ 
-           var incident = this.incident;
-           var place = ushahidi.lonlat4326(incident.locationlongitude,incident.locationlatitude);
-           var icon = ushahidi.icon(ushahidi.catICON[this.categories[0].category.id]);
-           var marker = new OpenLayers.Marker(place, icon);
-           incident.categories = [];
-           $.each(this.categories,function(){
-                    incident.categories.push({url:ushahidi.catICON[this.category.id]});
-           });
-			searchMaker.addMarker(marker);
-       });
-       $('#incidents').render({ incidents: data }).show();
-       $(".description").hide();
-       $(".incident").each(function () {
-            var flip = 0;
-            var description = $(".description",this);
-            var body = description.html() ;
-            body = body.replace(/\r\n/g, "<br/>");
-	        body = body.replace(/(\n|\r)/g, "<br/>");
-            description.html(body);
-            $(".title",this).click(function(){
-                description.toggle( flip++ % 2 == 0 );
-            });
-        });
     }
-           
-        
-    function mapEvent(event) {
-        $.log("map move");
-        var center = map.getCenter();
-        var zoom = map.zoom;
-        ushahidi.lonlat2Address(center,function(address){
-                $("#address").val(address);
-        });
-        $("#zoom").val(zoom);
-        var bound = map.getExtent().transform(map.getProjectionObject(),
-            new OpenLayers.Projection("EPSG:4326"));
-        southwest = bound .left+','+bound .bottom;
-        northeast = bound.right+','+bound .top;
-        $.log(southwest + "," + northeast);
-        ushahidi.incidentsByBounds(center,southwest,northeast,$("#keyword").val(),$("input[name=catID]:checked").val(),renderIncidents);
+   $("#holder").empty();
+    ushahidi.incidents({
+        "sw":southwest,
+        "ne":northeast,
+        "keyword":$("#keyword").val(),
+        "c":$("input[name=catID]:checked").val() ? $("input[name=catID]:checked").val()  : 0,
+        "offset":offset
+    },renderIncidents);
+}
 
-
-    }
-
+function initMap(){
     map = new OpenLayers.Map({
         div: "map",
         allOverlays: true,
@@ -223,36 +230,23 @@ $(function($,data) {
         }
     });
 
-    
-    
-    var layout = $('body').layout({
-        applyDefaultStyles: true,
-        resizable:  true,
-        slidable: true,
-        north__size:230,
-        east__size:Math.floor($(window).width() / 2)
-    });
-    $( "#tabs" ).tabs();
-    $(".ui-layout-center").tabs().find(".ui-tabs-nav").sortable({ axis: 'x', zIndex: 2 })
-    $(".ui-layout-center").removeClass("ui-corner-all");
-    $(".ui-layout-center").css("padding","0px");
-
-    layout.resizeAll();
     var osm = new OpenLayers.Layer.OSM();
     var gmap = new OpenLayers.Layer.Google("Google Streets", {visibility: false});
-
-    // note that first layer must be visible
     map.addLayers([osm, gmap]);
-    
     map.addControl(new OpenLayers.Control.LayerSwitcher());
     map.zoomToMaxExtent();
     var lonlat = ushahidi.lonlat4326(longitude,latitude);
     map.setCenter(lonlat, defaultZoom);
+}
+
+function initForm(){
+    //set up form
     $.each(ushahidi.zoomLevel, function(key){
         var value = this;
         var selected = key == defaultZoom ? "selected" : "" ;
         $("#zoom").prepend("<option value='"+ key +"' " + selected +  " >" + ushahidi.zoom2DistanceLabel(key) + "</option>");
     });
+
     ushahidi.category(function(json){
         var index = 2;
         var num = Math.floor($(window).width()/180); //label width
@@ -271,18 +265,43 @@ $(function($,data) {
         $(".category").addClass("ui-corner-all");
     });
     
-    
-    
     $("#search").submit(function(){
         $.log("test");
         ushahidi.address2Lonlat($("#address").val(),function(lonlat){
-            $.log(lonlat);
+            offset = 0;
             map.setCenter(ushahidi.lonlat(lonlat.lon,lonlat.lat), $("#zoom").val());
         });
         return false;
     });
     
-   // ushahidi.allIncidents(renderIncidents);
+    $("#more_button").click(function(){
+        $.log("more#################");
+       
+    });
+}
+
+function initLayout(){
+    //set up layout
+    var layout = $('body').layout({
+        applyDefaultStyles: true,
+        resizable:  true,
+        slidable: true,
+        north__size:230,
+        east__size:Math.floor($(window).width() / 2)
+    });
+    $( "#tabs" ).tabs();
+    $(".ui-layout-center").tabs().find(".ui-tabs-nav").sortable({ axis: 'x', zIndex: 2 })
+    $(".ui-layout-center").removeClass("ui-corner-all");
+    $(".ui-layout-center").css("padding","0px");
+    layout.resizeAll();
+}
+
+$(function($,data) {
+    //set up map
+    ushahidi = $.ushahidi({"endpoint":endpoint,"limit":limit});
+    initMap();
+    initForm();
+    initLayout();
 });
 </script>
 <DIV class="ui-layout-center">
@@ -292,8 +311,9 @@ $(function($,data) {
 		<li><a href="#tabs-3">最新コメント</a></li>
 	</ul>
 	<div id="tabs-1">
-
-<div id="incidents" style="display:none;">
+<div id="holder">
+</div>
+<div id="incidents_template" style="display:none;">
 <div repeat="${incidents}" class="incidents">
 <div class="incident">
 <span repeat="${Cur.incident.categories}" class="categories">
@@ -309,7 +329,7 @@ $(function($,data) {
 </div>
 </div>
 </div>
-<input id="more_button" type="button" value="次の情報"/>
+<a id="more_button" />more</a>
 
 <div if="${incidents.length == 0}" class="pager">There's no reports yet.</div>
 </div>
