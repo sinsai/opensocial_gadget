@@ -16,6 +16,7 @@ TBDロゴと検索フォームを付ける予定
 <link rel="stylesheet" href="http://openlayers.org/dev/theme/default/google.css" type="text/css"> 
 <link type="text/css" href="http://nati.sinsai.info/gadget/css/south-street/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
 <link href="http://nati.sinsai.info/gadget/css/jquery.loadmask.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="http://nati.sinsai.info/gadget/css/jquery.notifyBar.css" type="text/css" media="screen"  />
 <style type="text/css">
 <!--
 #map{
@@ -138,11 +139,13 @@ div.incident div.description{
 <script type="text/javascript" src="http://nati.sinsai.info/gadget/js/opensocial-jquery.templates.min.js"></script>
 <script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.json-2.2.min.js"></script>
 <script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.loadmask.min.js"></script>
+<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.loadmask.min.js"></script>
 <script src="http://layout.jquery-dev.net/lib/js/jquery.layout-latest.js"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=false"></script> 
 <script src="http://openlayers.org/dev/OpenLayers.js"></script> 
 <script src="http://nati.sinsai.info/gadget/js/timeline.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
+<script src="http://nati.sinsai.info/gadget/js/jquery.notifyBar.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/ushahidi_gadget.js"></script> 
 <script language="javascript">
 
@@ -155,9 +158,11 @@ var endpoint = "http://www.sinsai.info/ushahidi/";
 var southwest ;
 var northeast ;
 var offset = 0;
-var limit = 1000;
+var limit = 300;
 var searchLayer = "検索結果";
 var ushahidi;
+var selectedMaker = new OpenLayers.Layer.Markers("選択されたレポート");
+var selectedPoint;
 
 $.log = function(msg){
     $("#debug").html(msg + "<br>" +  $("#debug").html());
@@ -166,38 +171,41 @@ $.log = function(msg){
 function renderIncidents(data){
     var searchMaker = new OpenLayers.Layer.Markers(searchLayer);
     map.addLayer(searchMaker);
-    $.each(data,function(){ 
-        var incident = this.incident;
-        var place = ushahidi.lonlat4326(incident.locationlongitude,incident.locationlatitude);
-        var icon = ushahidi.icon(ushahidi.catICON[this.categories[0].category.id]);
-        var marker = new OpenLayers.Marker(place, icon);
-        incident.categories = [];
-        $.each(this.categories,function(){
-            incident.categories.push({url:ushahidi.catICON[this.category.id]});
+    if(data != null){
+        $.each(data,function(){ 
+            var incident = this.incident;
+            var place = ushahidi.lonlat4326(incident.locationlongitude,incident.locationlatitude);
+            var icon = ushahidi.icon(ushahidi.catICON[this.categories[0].category.id]);
+            var marker = new OpenLayers.Marker(place, icon);
+            incident.categories = [];
+            $.each(this.categories,function(){
+                incident.categories.push({url:ushahidi.catICON[this.category.id]});
+            });
+            searchMaker.addMarker(marker);
         });
-        searchMaker.addMarker(marker);
-    });
-   var clone = $("#incidents_template").clone();
-   clone.attr("id","incidents" + offset);
-   $("#holder").append(clone);
-   $('#incidents' + offset).render({ incidents: data }).show();
-   $(".description").hide();
-   $(".incident").each(function () {
-        var flip = 0;
-        var description = $(".description",this);
-        var body = description.html() ;
-        body = body.replace(/\r\n/g, "<br/>");
-        body = body.replace(/(\n|\r)/g, "<br/>");
-        description.html(body);
-        $(".title",this).click(function(){
-            description.toggle( flip++ % 2 == 0 );
+        var clone = $("#incidents_template").clone();
+        clone.attr("id","incidents" + offset);
+        $("#holder").append(clone);
+        $('#incidents' + offset).render({ incidents: data }).show();
+        $(".description").hide();
+        $(".incident").each(function () {
+            var flip = 0;
+            var description = $(".description",this);
+            var body = description.html() ;
+            body = body.replace(/\r\n/g, "<br/>");
+            body = body.replace(/(\n|\r)/g, "<br/>");
+            description.html(body);
+            $(".title",this).click(function(){
+                description.toggle( flip++ % 2 == 0 );
+            });
         });
-    });
+    }else{
+        error("レポートはありませんでした");
+    }
     $("body").unmask();
 }
 
 function refreshIncidents(){
-    $("body").mask("読み込み中...");
     ushahidi.incidents({
         "sw":southwest,
         "ne":northeast,
@@ -231,7 +239,13 @@ function mapEvent(event) {
     refreshIncidents();
 }
 
-
+function error(msg){
+  $.notifyBar({
+    html: msg,
+    cls: "error",
+    close:true
+  });
+}
 
 function initMap(){
     map = new OpenLayers.Map({
@@ -279,8 +293,13 @@ function initForm(){
     });
     
     $("#search").submit(function(){
-        $.log("test");
+        $("body").mask("読み込み中...");
         ushahidi.address2Lonlat($("#address").val(),function(lonlat){
+            if(lonlat == null){
+                 $("body").unmask();
+                 error("住所の読み込みに失敗しました");
+                return;
+            }
             var center = map.getCenter();
             var newCenter = ushahidi.lonlat(lonlat.lon,lonlat.lat);
             if(center.lat == newCenter.lat && center.lon == newCenter.lon && $("#zoom").val() == map.zoom){
@@ -293,6 +312,7 @@ function initForm(){
     });
     
     $("#more_button").click(function(){
+        $("body").mask("読み込み中...");
         offset += limit;
         refreshIncidents();
     });
@@ -320,6 +340,8 @@ $(function($,data) {
     initMap();
     initForm();
     initLayout();
+  
+    $("body").mask("読み込み中...");
 });
 </script>
 <DIV class="ui-layout-center">

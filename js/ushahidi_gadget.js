@@ -57,7 +57,6 @@ $.ushahidi = function(options) {
             var data = $.extend(defaults, options);
             var API = setting.endpoint  +"api" ;
             $.getJSON(API, data, function(json,status) {
-                $.log($.toJSON(json));
                 callback(json.payload.incidents,offset);
             });
         },
@@ -85,7 +84,14 @@ $.ushahidi = function(options) {
             var self = this;
             var API =  'http://www.geocoding.jp/api/?q=' + encodeURI(address);
             $.get(API, {}, function(xml) {
-                callback(self.lonlat4326($(xml).find("lng").text(),$(xml).find("lat").text()));
+                $.log("test");
+                $.log("|" + $(xml).find("lng").text() + "|" );
+                if($(xml).find("lng").text() != "" && $(xml).find("lat").text() != ""){
+                    callback(self.lonlat4326($(xml).find("lng").text(),$(xml).find("lat").text()));
+                }else{
+                    $.log("null");
+                     callback(null);
+                }
             });
         },
         zoom2Distance:function(zoom){
