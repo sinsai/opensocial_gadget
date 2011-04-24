@@ -1,138 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-<ModulePrefs title="sinsai gadget">
+ <ModulePrefs title="震災復興支援sinsai.infoガジェット" 
+    title_url="http://www.sinsai.info/" 
+    height="400" 
+    author="Nachi Ueno" 
+    author_email="nati.ueno@gmail.com">
 <Require feature="dynamic-height" />
 <Require feature="settitle" />
 <Require feature="views" />
+<Require feature="opensocial-0.8" />
 </ModulePrefs>
 <Content type="html" view="profile,home"><![CDATA[
-<script src="http://d2hv4ldeur9lfv.cloudfront.net/opensocial-jquery-1.3.2.5.min.js"></script>
-<a href="javascript:$.view('canvas', { url: 'test' });">sinsai.infoの画面へ</a>
-TBDロゴと検索フォームを付ける予定
-
-]]></Content>
-<Content type="html" view="canvas"><![CDATA[
 <link rel="stylesheet" href="http://openlayers.org/dev/theme/default/style.css" type="text/css"> 
 <link rel="stylesheet" href="http://openlayers.org/dev/theme/default/google.css" type="text/css"> 
 <link type="text/css" href="http://nati.sinsai.info/gadget/css/south-street/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
 <link href="http://nati.sinsai.info/gadget/css/jquery.loadmask.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="http://nati.sinsai.info/gadget/css/jquery.notifyBar.css" type="text/css" media="screen"  />
+<link rel="stylesheet" href="http://nati.sinsai.info/gadget/css/style.css" type="text/css" media="screen"  />
 <style type="text/css">
 <!--
-#map{
-    width:100%;
-    height:100%;
-}
+#holder{
+    height:400px;
+    max-height:500px;
+    overflow:hide;
+};
 
-.ui-tabs-nav li {
-    white-space:	nowrap;
-}
-.ui-tabs-nav li a {
-    padding:		4px 1.5ex 3px !important;
-}
-.ui-tabs-panel {
-    font-size:		1em !important;
-}
-
-.ui-layout-center {
-    padding:	0;
-}
-
-
-.ui-layout-pane-center .ui-tabs-nav {
-    /* don't need border or rounded corners - tabs 'fill' the pane */
-    border-top:		0;
-    border-left:	0;
-    border-right:	0;
-    padding-bottom:	0 !important;
-    -moz-border-radius:		0;
-    -webkit-border-radius:	0;
-}
-
-div.field{
-    
-}
-
-input{
-    font-size:1em;
-    border: 1px solid #CCC; 
-}
-
-#categoryfield {
-    margin:5px;
-    border:1px solid #cccccc;
-    overflow-y:scroll;
-    overflow-x:hidden;
-    height:80px;
-}
-
-#categoryfield input{
-    float:left;
-}
-
-#categoryfield label{
-    width:150px;
-    font-size:x-small;
-    display:block;
-    float:left;
-}
-
-#categoryfield label:hover{
-     background:#B4EDC5;
-}
-
-#search_button{
-    width:100%;
-}
-
-#more_button{
-    width:100%;
-}
-
-label {
-    width:100px;
-    display:block;
-    float:left;
-}
-
-#debug{
-    background:#000000;
-    color:#ffffff;
-}
-
-div.incident{
-    border-top:1px solid #cccccc;
-    margin-top:0px;
-    margin-bottom:3px;
-}
-
-div.incident:hover{
-     background:#B4EDC5;
-}
-
-div.incident span.date{
-    font-size:small;
-    float:right;
-    margin:2px;
+#holder a{
     color:#000000;
-    background:#eeeeee;
-    margin-top:0px;
+    text-decoration:none;
 }
-
-div.incident span.categories{
-    float:right;
-    margin:2px;
-    margin-top:0px;
-}
-
-div.incident div.description{
-    border:1px dashed #cccccc;
-}
-
 
 -->
 </style>
-
 <script src="http://nati.sinsai.info/gadget/js/opensocial-jquery.min.js"></script>
 <script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery-ui-1.8.11.custom.min.js"></script>
 <script type="text/javascript" src="http://nati.sinsai.info/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
@@ -147,200 +46,84 @@ div.incident div.description{
 <script src="http://nati.sinsai.info/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/jquery.notifyBar.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/ushahidi_gadget.js"></script> 
+<script src="http://nati.sinsai.info/gadget/js/sinsai.js"></script> 
+
+
 <script language="javascript">
-
-var map;
-var proj_4326 = new OpenLayers.Projection('EPSG:4326');
-var longitude = 140.48981665651;
-var latitude = 37.609377136228;
-var defaultZoom = 6;
-var endpoint = "http://www.sinsai.info/ushahidi/";
-var southwest ;
-var northeast ;
-var offset = 0;
-var limit = 300;
-var searchLayer = "検索結果";
-var ushahidi;
-var selectedMaker = new OpenLayers.Layer.Markers("選択されたレポート");
-var selectedPoint;
-
-$.log = function(msg){
-    $("#debug").html(msg + "<br>" +  $("#debug").html());
-}
-
-function renderIncidents(data){
-    var searchMaker = new OpenLayers.Layer.Markers(searchLayer);
-    map.addLayer(searchMaker);
-    if(data != null){
-        $.each(data,function(){ 
-            var incident = this.incident;
-            var place = ushahidi.lonlat4326(incident.locationlongitude,incident.locationlatitude);
-            var icon = ushahidi.icon(ushahidi.catICON[this.categories[0].category.id]);
-            var marker = new OpenLayers.Marker(place, icon);
-            incident.categories = [];
-            $.each(this.categories,function(){
-                incident.categories.push({url:ushahidi.catICON[this.category.id]});
+$(function($,data) {
+    //set up map
+    ushahidi = $.ushahidi({"endpoint":endpoint,"limit":3});
+    $.getData('/appdata/@viewer/@self', {}, function(data) {
+        $.each(data, function(userId, data) {
+            if( data.address == null || data.sw == null || data.ne == null ){
+                message("住所を入力してください　<a href=\"javascript:$.view('canvas', { url: 'test' });\">詳細画面へ </a>");
+                
+            }
+            ushahidi.incidents({
+                "sw":data.sw,
+                "ne":data.ne,
+                "keyword":data.keyword,
+                "c":data.c,
+            },function(data){
+                var clone = $("#incidents_template").clone();
+                    clone.attr("id","incidents" + offset);
+                    $("#holder").append(clone);
+                    $('#incidents' + offset).render({ incidents: data }).show();
             });
-            searchMaker.addMarker(marker);
+            $(window).adjustHeight();
         });
-        var clone = $("#incidents_template").clone();
-        clone.attr("id","incidents" + offset);
-        $("#holder").append(clone);
-        $('#incidents' + offset).render({ incidents: data }).show();
-        $(".description").hide();
-        $(".incident").each(function () {
-            var flip = 0;
-            var description = $(".description",this);
-            var body = description.html() ;
-            body = body.replace(/\r\n/g, "<br/>");
-            body = body.replace(/(\n|\r)/g, "<br/>");
-            description.html(body);
-            $(".title",this).click(function(){
-                description.toggle( flip++ % 2 == 0 );
-            });
-        });
-    }else{
-        error("レポートはありませんでした");
-    }
-    $("body").unmask();
-}
-
-function refreshIncidents(){
-    ushahidi.incidents({
-        "sw":southwest,
-        "ne":northeast,
-        "keyword":$("#keyword").val(),
-        "c":$("input[name=catID]:checked").val() ? $("input[name=catID]:checked").val()  : 0,
-        "offset":offset
-    },renderIncidents);
-}
-
-function mapEvent(event) {
-    var center = map.getCenter();
-    var zoom = map.zoom;
-    ushahidi.lonlat2Address(center,function(address){
-            $("#address").val(address);
     });
-    $("#zoom").val(zoom);
-    var bound = map.getExtent().transform(map.getProjectionObject(),
-        new OpenLayers.Projection("EPSG:4326"));
-    southwest = bound .left+','+bound .bottom;
-    northeast = bound.right+','+bound .top;
-    var markers = map.getLayersByName(searchLayer);
-    if (markers && markers.length > 0)
-    {
-        for (var i = 0; i < markers.length; i++)
-        {
-            map.removeLayer(markers[i]);
-        }
-    }
-    offset = 0;
-   $("#holder").empty();
-    refreshIncidents();
-}
-
-function error(msg){
-  $.notifyBar({
-    html: msg,
-    cls: "error",
-    close:true
-  });
-}
-
-function initMap(){
-    map = new OpenLayers.Map({
-        div: "map",
-        allOverlays: true,
-        eventListeners: {
-            "moveend": mapEvent,
-            //"zoomend": mapEvent,
-        }
-    });
-
-    var osm = new OpenLayers.Layer.OSM();
-    var gmap = new OpenLayers.Layer.Google("Google Streets", {visibility: false});
-    map.addLayers([osm, gmap]);
-    map.addControl(new OpenLayers.Control.LayerSwitcher());
-    map.zoomToMaxExtent();
-    var lonlat = ushahidi.lonlat4326(longitude,latitude);
-    map.setCenter(lonlat, defaultZoom);
-}
-
-function initForm(){
-    //set up form
-    $.each(ushahidi.zoomLevel, function(key){
-        var value = this;
-        var selected = key == defaultZoom ? "selected" : "" ;
-        $("#zoom").prepend("<option value='"+ key +"' " + selected +  " >" + ushahidi.zoom2DistanceLabel(key) + "</option>");
-    });
-
-    ushahidi.category(function(json){
-        var index = 2;
-        var num = Math.floor($(window).width()/180); //label width
-        var radio = '<input type="radio" value="0" name="catID" id="0" /><label for="0" ><img src="http://www.sinsai.info/ushahidi/media/img/all.png" alt="すべて"/>全て</label>';
-        $("#categoryfield").append(radio);
-        $.each(json,function(){
-            var radio = '<input type="radio" value="' + this.category.id + '" name="catID" id="'+ this.category.id +'" /><label for="'+ this.category.id +'" ><img src="' + this.category.image_thumb + '" alt="' + this.category.title + '"/>'+this.category.title+'</label>';
-            $("#categoryfield").append(radio);
-            if( index % num == 0 ){
-                $("#categoryfield").append("<br style='clear:both;'/>");
-            }
-            index++;
-            ushahidi.catICON[this.category.id] = this.category.image_thumb;
-        });
-        
-        $(".category").addClass("ui-corner-all");
-    });
-    
-    $("#search").submit(function(){
-        $("body").mask("読み込み中...");
-        ushahidi.address2Lonlat($("#address").val(),function(lonlat){
-            if(lonlat == null){
-                 $("body").unmask();
-                 error("住所の読み込みに失敗しました");
-                return;
-            }
-            var center = map.getCenter();
-            var newCenter = ushahidi.lonlat(lonlat.lon,lonlat.lat);
-            if(center.lat == newCenter.lat && center.lon == newCenter.lon && $("#zoom").val() == map.zoom){
-                 offset = 0;
-                 refreshIncidents();
-            }
-            map.setCenter(ushahidi.lonlat(lonlat.lon,lonlat.lat), $("#zoom").val());
-        });
-        return false;
-    });
-    
     $("#more_button").click(function(){
-        $("body").mask("読み込み中...");
-        offset += limit;
-        refreshIncidents();
+        $.view('canvas');
     });
-}
+});
 
-function initLayout(){
-    //set up layout
-    var layout = $('body').layout({
-        applyDefaultStyles: true,
-        resizable:  true,
-        slidable: true,
-        north__size:230,
-        east__size:Math.floor($(window).width() / 2)
-    });
-    $( "#tabs" ).tabs();
-    $(".ui-layout-center").tabs().find(".ui-tabs-nav").sortable({ axis: 'x', zIndex: 2 })
-    $(".ui-layout-center").removeClass("ui-corner-all");
-    $(".ui-layout-center").css("padding","0px");
-    layout.resizeAll();
-}
 
+</script>
+<a href="http://www.sinsai.info/ushahidi/"><img src="http://www.sinsai.info/ushahidi/media/img/logo.gif" width="250px"></a>
+<div>最近の情報</div>
+<div id="holder">
+</div>
+<input type="button" id="more_button" value="詳細画面 (検索＆地図)"/>
+<div id="incidents_template" style="display:none;">
+    <div repeat="${incidents}" class="incidents">
+        <div class="incident">
+            <span class="date">${Cur.incident.incidentdate } </span>
+            <div class="title"> <a href="http://www.sinsai.info/ushahidi/reports/view/${Cur.incident.incidentid}" target="_blank">${Cur.incident.incidenttitle } </a></div>
+        </div>
+    </div>
+</div>
+
+]]></Content>
+<Content type="html" view="canvas"><![CDATA[
+<link rel="stylesheet" href="http://openlayers.org/dev/theme/default/style.css" type="text/css"> 
+<link rel="stylesheet" href="http://openlayers.org/dev/theme/default/google.css" type="text/css"> 
+<link type="text/css" href="http://nati.sinsai.info/gadget/css/south-street/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
+<link href="http://nati.sinsai.info/gadget/css/jquery.loadmask.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="http://nati.sinsai.info/gadget/css/jquery.notifyBar.css" type="text/css" media="screen"  />
+<link rel="stylesheet" href="http://nati.sinsai.info/gadget/css/style.css" type="text/css" media="screen"  />
+<script src="http://nati.sinsai.info/gadget/js/opensocial-jquery.min.js"></script>
+<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery-ui-1.8.11.custom.min.js"></script>
+<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
+<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/opensocial-jquery.templates.min.js"></script>
+<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.json-2.2.min.js"></script>
+<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.loadmask.min.js"></script>
+<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.loadmask.min.js"></script>
+<script src="http://layout.jquery-dev.net/lib/js/jquery.layout-latest.js"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script> 
+<script src="http://openlayers.org/dev/OpenLayers.js"></script> 
+<script src="http://nati.sinsai.info/gadget/js/timeline.js"></script>
+<script src="http://nati.sinsai.info/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
+<script src="http://nati.sinsai.info/gadget/js/jquery.notifyBar.js"></script>
+<script src="http://nati.sinsai.info/gadget/js/ushahidi_gadget.js"></script> 
+<script src="http://nati.sinsai.info/gadget/js/sinsai.js"></script> 
+<script language="javascript">
 $(function($,data) {
     //set up map
     ushahidi = $.ushahidi({"endpoint":endpoint,"limit":limit});
     initMap();
     initForm();
     initLayout();
-  
     $("body").mask("読み込み中...");
 });
 </script>
@@ -348,7 +131,6 @@ $(function($,data) {
 	<ul>
 		<li><a href="#incident-tab">レポート</a></li>
 		<li><a href="#tabs-2">投稿</a></li>
-		<li><a href="#tabs-3">最新コメント</a></li>
 	</ul>
 	<div id="incident-tab">
         <div id="holder">
@@ -368,16 +150,16 @@ $(function($,data) {
                         <span repeat="${Cur.media}" class="link" >
                         <a href="${Cur.link}" target="brank">情報元リンク${Cur.index}</a><br>
                         </span>
+                        <id>${Cur.incident.incidentid}</id>
+                        <lon>${Cur.incident.locationlongitude}</lon>
+                        <lat>${Cur.incident.locationlatitude}</lat>
                     </div>
                 </div>
             </div>
 	    </div>
 	</div>
 	<div id="tabs-2">
-    
-	</div>
-	<div id="tabs-3">
-		<p>最新コメント</p>
+    情報の投稿は<a href="http://www.sinsai.info/ushahidi/reports/submit">こちら</a>から</a>
 	</div>
 </DIV>
 <DIV class="ui-layout-north">
@@ -402,7 +184,7 @@ $(function($,data) {
 </DIV>
 </form>
 
-<DIV class="ui-layout-south"><div id="debug"></div></DIV>
+<!-- <DIV class="ui-layout-south"><div id="debug"></div></DIV> -->
 <DIV class="ui-layout-east"><div id="map" class="smallmap"></div></DIV>
 
 ]]>

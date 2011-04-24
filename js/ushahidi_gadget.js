@@ -83,13 +83,12 @@ $.ushahidi = function(options) {
          address2Lonlat:function(address,callback){
             var self = this;
             var API =  'http://www.geocoding.jp/api/?q=' + encodeURI(address);
+            $.log(API);
             $.get(API, {}, function(xml) {
-                $.log("test");
-                $.log("|" + $(xml).find("lng").text() + "|" );
+                $.log(xml);
                 if($(xml).find("lng").text() != "" && $(xml).find("lat").text() != ""){
                     callback(self.lonlat4326($(xml).find("lng").text(),$(xml).find("lat").text()));
                 }else{
-                    $.log("null");
                      callback(null);
                 }
             });
