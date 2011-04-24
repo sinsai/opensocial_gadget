@@ -19,6 +19,13 @@
 <link rel="stylesheet" href="http://nati.sinsai.info/gadget/css/style.css" type="text/css" media="screen"  />
 <style type="text/css">
 <!--
+
+#new_info{
+    margin-top:8px;
+    margin-bottom:8px;
+    border-bottom:1px solid #333333;
+}
+
 #holder{
     height:400px;
     max-height:500px;
@@ -81,7 +88,7 @@ $(function($,data) {
 
 </script>
 <a href="http://www.sinsai.info/ushahidi/"><img src="http://www.sinsai.info/ushahidi/media/img/logo.gif" width="250px"></a>
-<div>最近の情報</div>
+<div id="new_info">最近の情報</div>
 <div id="holder">
 </div>
 <input type="button" id="more_button" value="詳細画面 (検索＆地図)"/>
