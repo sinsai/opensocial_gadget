@@ -34,7 +34,6 @@ $.ushahidi = function(options) {
        8 : 50000,
        7 : 100000,
        6 : 200000};
-    
     UshahidiAPI.prototype = {
         zoomLevel:zoomLevel,
         lonlat4326:function(lon,lat){
@@ -83,13 +82,14 @@ $.ushahidi = function(options) {
             });
          },
          address2Lonlat:function(address,callback){
+            var self = this;
             var API =  'http://www.geocoding.jp/api/?q=' + encodeURI(address);
             $.get(API, {}, function(xml) {
                 callback(self.lonlat4326($(xml).find("lng").text(),$(xml).find("lat").text()));
             });
         },
         zoom2Distance:function(zoom){
-            return self.zoomLevel[zoom];
+            return this.zoomLevel[zoom];
         },
         zoom2DistanceLabel:function(zoom){
             return zoomLevel[zoom] > 1000 ? Math.floor(zoomLevel[zoom]/1000) + "km" : zoomLevel[zoom] + "m";
@@ -99,13 +99,13 @@ $.ushahidi = function(options) {
             return new OpenLayers.LonLat(lon,lat);
         },
         icon:function(url){
-            var sz = new OpenLayers.Size(21, 25);
+            var sz = new OpenLayers.Size(10, 10);
             var calculateOffset = function(size) {
                 return new OpenLayers.Pixel(-(size.w/2), -size.h);
             };
             return new OpenLayers.Icon(url, sz, null, calculateOffset);
         }
     };
-    return new UshahidiAPI();
+    return  new UshahidiAPI();
 };
 

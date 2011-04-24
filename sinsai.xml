@@ -15,6 +15,7 @@ TBDロゴと検索フォームを付ける予定
 <link rel="stylesheet" href="http://openlayers.org/dev/theme/default/style.css" type="text/css"> 
 <link rel="stylesheet" href="http://openlayers.org/dev/theme/default/google.css" type="text/css"> 
 <link type="text/css" href="http://nati.sinsai.info/gadget/css/south-street/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
+<link href="http://nati.sinsai.info/gadget/css/jquery.loadmask.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 <!--
 #map{
@@ -136,6 +137,7 @@ div.incident div.description{
 <script type="text/javascript" src="http://nati.sinsai.info/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
 <script type="text/javascript" src="http://nati.sinsai.info/gadget/js/opensocial-jquery.templates.min.js"></script>
 <script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.json-2.2.min.js"></script>
+<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.loadmask.min.js"></script>
 <script src="http://layout.jquery-dev.net/lib/js/jquery.layout-latest.js"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=false"></script> 
 <script src="http://openlayers.org/dev/OpenLayers.js"></script> 
@@ -150,8 +152,10 @@ var longitude = 140.48981665651;
 var latitude = 37.609377136228;
 var defaultZoom = 6;
 var endpoint = "http://www.sinsai.info/ushahidi/";
+var southwest ;
+var northeast ;
 var offset = 0;
-var limit = 300;
+var limit = 1000;
 var searchLayer = "検索結果";
 var ushahidi;
 
@@ -159,7 +163,7 @@ $.log = function(msg){
     $("#debug").html(msg + "<br>" +  $("#debug").html());
 }
 
-function renderIncidents(data,offset){
+function renderIncidents(data){
     var searchMaker = new OpenLayers.Layer.Markers(searchLayer);
     map.addLayer(searchMaker);
     $.each(data,function(){ 
@@ -189,6 +193,18 @@ function renderIncidents(data,offset){
             description.toggle( flip++ % 2 == 0 );
         });
     });
+    $("body").unmask();
+}
+
+function refreshIncidents(){
+    $("body").mask("読み込み中...");
+    ushahidi.incidents({
+        "sw":southwest,
+        "ne":northeast,
+        "keyword":$("#keyword").val(),
+        "c":$("input[name=catID]:checked").val() ? $("input[name=catID]:checked").val()  : 0,
+        "offset":offset
+    },renderIncidents);
 }
 
 function mapEvent(event) {
@@ -210,15 +226,12 @@ function mapEvent(event) {
             map.removeLayer(markers[i]);
         }
     }
+    offset = 0;
    $("#holder").empty();
-    ushahidi.incidents({
-        "sw":southwest,
-        "ne":northeast,
-        "keyword":$("#keyword").val(),
-        "c":$("input[name=catID]:checked").val() ? $("input[name=catID]:checked").val()  : 0,
-        "offset":offset
-    },renderIncidents);
+    refreshIncidents();
 }
+
+
 
 function initMap(){
     map = new OpenLayers.Map({
@@ -268,15 +281,20 @@ function initForm(){
     $("#search").submit(function(){
         $.log("test");
         ushahidi.address2Lonlat($("#address").val(),function(lonlat){
-            offset = 0;
+            var center = map.getCenter();
+            var newCenter = ushahidi.lonlat(lonlat.lon,lonlat.lat);
+            if(center.lat == newCenter.lat && center.lon == newCenter.lon && $("#zoom").val() == map.zoom){
+                 offset = 0;
+                 refreshIncidents();
+            }
             map.setCenter(ushahidi.lonlat(lonlat.lon,lonlat.lat), $("#zoom").val());
         });
         return false;
     });
     
     $("#more_button").click(function(){
-        $.log("more#################");
-       
+        offset += limit;
+        refreshIncidents();
     });
 }
 
@@ -306,37 +324,34 @@ $(function($,data) {
 </script>
 <DIV class="ui-layout-center">
 	<ul>
-		<li><a href="#tabs-1">レポート</a></li>
+		<li><a href="#incident-tab">レポート</a></li>
 		<li><a href="#tabs-2">投稿</a></li>
 		<li><a href="#tabs-3">最新コメント</a></li>
 	</ul>
-	<div id="tabs-1">
-<div id="holder">
-</div>
-<div id="incidents_template" style="display:none;">
-<div repeat="${incidents}" class="incidents">
-<div class="incident">
-<span repeat="${Cur.incident.categories}" class="categories">
-<img src="${Cur.url}"/>
-</span>
-<span class="date">${Cur.incident.incidentdate } </span>
-<div class="title">${Cur.incident.incidenttitle } </div>
-<div class="description">${Cur.incident.incidentdescription }
-<a href="http://www.sinsai.info/ushahidi/reports/view/${Cur.incident.incidentid}">コメントする</a><br>
-<span repeat="${Cur.media}" class="link" >
-<a href="${Cur.link}" target="brank">情報元リンク${Cur.index}</a><br>
-</span>
-</div>
-</div>
-</div>
-<a id="more_button" />more</a>
-
-<div if="${incidents.length == 0}" class="pager">There's no reports yet.</div>
-</div>
-
+	<div id="incident-tab">
+        <div id="holder">
+        </div>
+        <input type="button" id="more_button" value="次へ"/>
+        <div id="incidents_template" style="display:none;">
+            <div repeat="${incidents}" class="incidents">
+                <div class="incident">
+                    <span repeat="${Cur.incident.categories}" class="categories">
+                        <img src="${Cur.url}"/>
+                    </span>
+                    <span class="date">${Cur.incident.incidentdate } </span>
+                    <div class="title">${Cur.incident.incidenttitle } </div>
+                    <div class="description">
+                        ${Cur.incident.incidentdescription }
+                        <a href="http://www.sinsai.info/ushahidi/reports/view/${Cur.incident.incidentid}">コメントする</a><br>
+                        <span repeat="${Cur.media}" class="link" >
+                        <a href="${Cur.link}" target="brank">情報元リンク${Cur.index}</a><br>
+                        </span>
+                    </div>
+                </div>
+            </div>
+	    </div>
 	</div>
 	<div id="tabs-2">
-    <h1>Uniform Demo</h1> 
     
 	</div>
 	<div id="tabs-3">
