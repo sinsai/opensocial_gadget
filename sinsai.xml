@@ -138,7 +138,7 @@ $(function($,data) {
             <div repeat="${incidents}" class="incidents">
                 <div class="incident">
                     <span repeat="${Cur.incident.categories}" class="categories">
-                        <span class="img">${Cur.url}</span>
+                        <img src="${Cur.url}"/>
                     </span>
                     <span class="date">${Cur.incident.incidentdate } </span>
                     <div class="title">${Cur.incident.incidenttitle } </div>
