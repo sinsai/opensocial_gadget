@@ -1,4 +1,4 @@
-/*
+    /*
  * jQuery Ushahidi API Library 0.0.1
  * http://sinsai.info
  *
@@ -16,7 +16,7 @@ var markerOpacity = "0.8";
 $.ushahidi = function(options) {
     var defaults = {
         'endpoint':'', //EndPoint of ushahidi API,
-        'limit':300,
+        'limit':300
     };
     var setting = $.extend(defaults, options);
     UshahidiAPI = function(){
@@ -80,12 +80,23 @@ $.ushahidi = function(options) {
                 callback(address);
             });
          },
+         parseXML:function(data){
+                var xml;
+                if(!$.support.opacity){
+                    xml = new ActiveXObject("Microsoft.XMLDOM");
+                    xml.async = false;
+                    xml.loadXML(data);
+                } else {
+                    xml = data;
+                }
+                return xml;
+         },
          address2Lonlat:function(address,callback){
             var self = this;
             var API =  'http://www.geocoding.jp/api/?q=' + encodeURI(address);
             $.log(API);
-            $.get(API, {}, function(xml) {
-                $.log(xml);
+            $.get(API, {}, function(data) {
+                var xml = self.parseXML(data);
                 if($(xml).find("lng").text() != "" && $(xml).find("lat").text() != ""){
                     callback(self.lonlat4326($(xml).find("lng").text(),$(xml).find("lat").text()));
                 }else{

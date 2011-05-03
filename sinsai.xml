@@ -103,8 +103,8 @@ $(function($,data) {
 
 ]]></Content>
 <Content type="html" view="canvas"><![CDATA[
-<link rel="stylesheet" href="http://openlayers.org/dev/theme/default/style.css" type="text/css"> 
-<link rel="stylesheet" href="http://openlayers.org/dev/theme/default/google.css" type="text/css"> 
+<link rel="stylesheet" href="http://nati.sinsai.info/gadget/css/openlayers.css" type="text/css"> 
+<link rel="stylesheet" href="http://nati.sinsai.info/gadget/css/google.css" type="text/css"> 
 <link type="text/css" href="http://nati.sinsai.info/gadget/css/south-street/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
 <link href="http://nati.sinsai.info/gadget/css/jquery.loadmask.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="http://nati.sinsai.info/gadget/css/jquery.notifyBar.css" type="text/css" media="screen"  />
@@ -118,22 +118,13 @@ $(function($,data) {
 <script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.loadmask.min.js"></script>
 <script src="http://layout.jquery-dev.net/lib/js/jquery.layout-latest.js"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=false"></script> 
-<script src="http://openlayers.org/dev/OpenLayers.js"></script> 
+<script type="text/javascript" src="http://www.sinsai.info/ushahidi/media/js/jquery.pngFix.js"></script> 
+<script src="http://nati.sinsai.info/gadget/js/OpenLayers.js"></script> 
 <script src="http://nati.sinsai.info/gadget/js/timeline.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/jquery.notifyBar.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/ushahidi_gadget.js"></script> 
 <script src="http://nati.sinsai.info/gadget/js/sinsai.js"></script> 
-<script language="javascript">
-$(function($,data) {
-    //set up map
-    ushahidi = $.ushahidi({"endpoint":endpoint,"limit":limit});
-    initMap();
-    initForm();
-    initLayout();
-    $("body").mask("読み込み中...");
-});
-</script>
 <DIV class="ui-layout-center">
 	<ul>
 		<li><a href="#incident-tab">レポート</a></li>
@@ -147,7 +138,7 @@ $(function($,data) {
             <div repeat="${incidents}" class="incidents">
                 <div class="incident">
                     <span repeat="${Cur.incident.categories}" class="categories">
-                        <img src="${Cur.url}"/>
+                        <span class="img">${Cur.url}</span>
                     </span>
                     <span class="date">${Cur.incident.incidentdate } </span>
                     <div class="title">${Cur.incident.incidenttitle } </div>
@@ -157,9 +148,9 @@ $(function($,data) {
                         <span repeat="${Cur.media}" class="link" >
                         <a href="${Cur.link}" target="brank">情報元リンク${Cur.index}</a><br>
                         </span>
-                        <id>${Cur.incident.incidentid}</id>
-                        <lon>${Cur.incident.locationlongitude}</lon>
-                        <lat>${Cur.incident.locationlatitude}</lat>
+                        <div class="id">${Cur.incident.incidentid}</div>
+                        <div class="lon">${Cur.incident.locationlongitude}</div>
+                        <div class="lat">${Cur.incident.locationlatitude}</div>
                     </div>
                 </div>
             </div>
@@ -172,10 +163,10 @@ $(function($,data) {
 <DIV class="ui-layout-north">
 <form id="search">
 <div class="field">
-<label>住所</label><input type="text" size="40" id="address"/>
+<label>住所</label><input type="text" size="40" id="address" value="気仙沼"/>
 </div>
 <div class="field">
-<label>縮尺</label><select id="zoom"/>
+<label>縮尺</label><select id="zoom" name="zoom"></select>
 </div>
 <div class="field">
 <label>キーワード</label><input type="text" size="40" id="keyword"/>
@@ -191,7 +182,7 @@ $(function($,data) {
 </DIV>
 </form>
 
-<!-- <DIV class="ui-layout-south"><div id="debug"></div></DIV> -->
+<DIV class="ui-layout-south"><div id="debug"></div></DIV>
 <DIV class="ui-layout-east"><div id="map" class="smallmap"></div></DIV>
 
 ]]>
