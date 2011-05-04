@@ -247,3 +247,12 @@ p.copyright a:hover{
 p.copyright a:active{
         color:#FFFFFF;
 }
+
+div.incidents{
+    font-size:small;
+}
+
+#OpenLayers_Control_MaximizeDiv{
+    background-color:#0E2FC2;
+}
+

@@ -297,14 +297,13 @@ function initMap(){
                 })
             })
         })
- 
+
     map.addLayers([osm,virtualearth_hybrid,google_hybrid,kml]);
-    map.addControl(new OpenLayers.Control.LayerSwitcher());
+    map.addControl(new OpenLayers.Control.LargeLayerSwitcher());
     map.zoomToMaxExtent();
     var click = new OpenLayers.Control.Click();
     map.addControl(click);
     click.activate();
-    $("#OpenLayers_Control_MaximizeDiv").append("<div style='color:black;'>地図の切り替え</div>");
     map.addLayer(searchMaker);
    // var lonlat = ushahidi.lonlat4326(longitude,latitude);
    // map.setCenter(lonlat, defaultZoom);

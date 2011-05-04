@@ -125,6 +125,7 @@ $(function($,data) {
 <script src="http://nati.sinsai.info/gadget/js/timeline.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/jquery.notifyBar.js"></script>
+<script src="http://nati.sinsai.info/gadget/js/LargeLayerSwitcher.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/ushahidi_gadget.js"></script> 
 <script src="http://nati.sinsai.info/gadget/js/openlayers_opensocial.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/sinsai.js"></script> 
