@@ -304,7 +304,7 @@ function initMap(){
     var click = new OpenLayers.Control.Click();
     map.addControl(click);
     click.activate();
-    
+    $("#OpenLayers_Control_MaximizeDiv").append("<div style='color:black;'>地図の切り替え</div>");
     map.addLayer(searchMaker);
    // var lonlat = ushahidi.lonlat4326(longitude,latitude);
    // map.setCenter(lonlat, defaultZoom);
