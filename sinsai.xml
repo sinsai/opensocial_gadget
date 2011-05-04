@@ -49,6 +49,7 @@
 <script src="http://layout.jquery-dev.net/lib/js/jquery.layout-latest.js"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=false"></script> 
 <script src="http://openlayers.org/dev/OpenLayers.js"></script> 
+<script src="http://nati.sinsai.info/gadget/js/openlayers_opensocial.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/timeline.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/jquery.notifyBar.js"></script>
@@ -117,20 +118,23 @@ $(function($,data) {
 <script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.loadmask.min.js"></script>
 <script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.loadmask.min.js"></script>
 <script src="http://layout.jquery-dev.net/lib/js/jquery.layout-latest.js"></script>
-<script src="http://maps.google.com/maps/api/js?sensor=false"></script> 
+<script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6'></script>
+<script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAC99cU8JddvQOwYmQc58EvhTwkllQ1ylirtKWEj6gIkcaRzt0cxQ3dZF78whwStV1xjQiTdi4NnZ4eg'></script>
 <script type="text/javascript" src="http://www.sinsai.info/ushahidi/media/js/jquery.pngFix.js"></script> 
 <script src="http://nati.sinsai.info/gadget/js/OpenLayers.js"></script> 
 <script src="http://nati.sinsai.info/gadget/js/timeline.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/jquery.notifyBar.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/ushahidi_gadget.js"></script> 
+<script src="http://nati.sinsai.info/gadget/js/openlayers_opensocial.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/sinsai.js"></script> 
 <DIV class="ui-layout-center">
-	<ul>
-		<li><a href="#incident-tab">レポート</a></li>
-		<li><a href="#tabs-2">投稿</a></li>
-	</ul>
-	<div id="incident-tab">
+    <ul>
+        <li><a href="#incident-tab">レポート</a></li>
+        <li><a href="#tabs-2">レポートの投稿</a></li>
+        <li><a href="#tabs-3">モバイル・携帯</a></li>
+    </ul>
+    <div id="incident-tab">
         <div id="holder">
         </div>
         <input type="button" id="more_button" value="次へ"/>
@@ -154,14 +158,37 @@ $(function($,data) {
                     </div>
                 </div>
             </div>
-	    </div>
-	</div>
-	<div id="tabs-2">
-    情報の投稿は<a href="http://www.sinsai.info/ushahidi/reports/submit">こちら</a>から</a>
-	</div>
+        </div>
+    </div>
+    <div id="tabs-2">
+        レポート（情報）を投稿する方法
+        <ol>
+            <li>地図をクリックするか、<a href="http://www.sinsai.info/ushahidi/reports/submit/">こちらのフォームから投稿</a></li>
+                <li>次のアドレスにメールで投稿  <a href="mailto:report@sinsai.info">report@sinsai.info</a></li>
+                <li>Twitterから投稿。次のハッシュタグをつけてツイート  <strong>jishin</strong> or <strong>j_j_helpme</strong> or <strong>hinan</strong> or <strong>anpi</strong> or <strong>311care</strong></li>
+                
+        </ol>
+    </div>
+    <div id="tabs-3">
+		    <div class="mobile-box-qr">
+		    <img src="http://chart.apis.google.com/chart?chs=100x100&amp;cht=qr&amp;chl=http://www.sinsai.info/">
+		    </div>
+		    <div class="mobile-box-description">
+			<h3>モバイルサイト＆アプリ</h3>
+			モバイル端末からQRコードを読み取るか
+			sinsai.infoにアクセスしてください。
+			<a href="https://market.android.com/details?id=sinsai.info.android.app&amp;feature=search_result">Androidアプリ</a>でもご利用できます。
+			</div>
+    </div>
+    
 </DIV>
 <DIV class="ui-layout-north">
+
 <form id="search">
+<div class="logo">
+<a href="http://www.sinsai.info/ushahidi/"><img border="0" src="http://www.sinsai.info/ushahidi/media/img/logo.gif" alt="東北沖地震 震災情報サイト sinsai.info: 3/11 東北地方太平洋沖地震,Earthquake Tohoku area in Japan 3/11" /></a>
+</div>
+<div class="basicForm">
 <div class="field">
 <label>住所</label><input type="text" size="40" id="address" value="気仙沼"/>
 </div>
@@ -171,8 +198,9 @@ $(function($,data) {
 <div class="field">
 <label>キーワード</label><input type="text" size="40" id="keyword"/>
 </div>
+</div>
+<br style="clear:both;"/>
 <div class="field">
-<label>カテゴリ</label><br style="clear:both;"/>
 <div id="categoryfield">
 </div>
 </div>
@@ -182,7 +210,62 @@ $(function($,data) {
 </DIV>
 </form>
 
-<DIV class="ui-layout-south"><div id="debug"></div></DIV>
+<DIV class="ui-layout-south">
+<div class="footer">
+			<!-- footer credits --> 
+			<div class="footer-credits"> 
+				the &nbsp; <a href="http://www.ushahidi.com/"><img src="http://www.sinsai.info/ushahidi//media/img/footer-logo.png" alt="Ushahidi" style="vertical-align:middle" /></a>&nbsp; Platform
+			</div> 
+			<!-- / footer credits --> 
+ 
+			<!-- footer menu --> 
+			<div class="footermenu"> 
+				<ul class="clearingfix"> 
+					<li><a class="item1" href="http://www.sinsai.info/ushahidi/">ホーム</a></li> 
+															<li><a href="http://www.sinsai.info/ushahidi/page/index/9">サイト運営団体<!--助ける方法--></a></li> 
+					<li><a href="http://www.sinsai.info/ushahidi/contact">お問い合わせ</a></li> 
+					<li><a href="https://spreadsheets.google.com/viewform?formkey=dGlnajlENUtFOFZnWlN2XzlqbklickE6MQ">サイトの問題点や機能改善などの報告</a></li> 
+									</ul> 
+				      				</div> 
+			<!-- / footer menu --> 
+			<!-- footer credits links --> 
+			<div class="footer-credits-links"> 
+				<div class="footer-credit"> 
+					Powered by
+				</div> 
+				<ul> 
+					<li> 
+						<a href="http://aws.amazon.com/" target="_blank"> 
+							<img src="http://www.sinsai.info/ushahidi//media/img/Powered-by-Amazon-Web-Services.jpeg" alt="Amazon-Web-Services" style="vertical-align:middle" /> 
+						</a> 
+					</li> 
+					<li> 
+						<a href="http://heartbeats.jp/" target="_blank"> 
+							<img src="http://www.sinsai.info/ushahidi//media/img/powered-by-heartbeats.gif" alt="heartbeats" style="vertical-align:middle" /> 
+						</a> 
+					</li> 
+					<li> 
+						<a href="http://www.gree.co.jp/" target="_blank"> 
+							<img src="http://www.sinsai.info/ushahidi//media/img/powered-by-gree.gif" alt="gree" style="vertical-align:middle" /> 
+						</a> 
+					</li> 
+					<li> 
+						<a href="http://www.nttdata.co.jp/" target="_blank"> 
+							<img src="http://www.sinsai.info/ushahidi//media/img/nttdata-gi.gif" alt="nttdata" style="vertical-align:middle" /> 
+						</a> 
+					</li> 
+					<li> 
+						<a href="http://www.yahoo.co.jp/" target="_blank"> 
+							<img src="http://www.sinsai.info/ushahidi//media/img/logo_yahoo.gif" alt="yahoo" style="vertical-align:middle" /> 
+						</a> 
+					</li> 
+				</ul> 
+			</div> 
+			<br style="clear:both;"/>
+      		<div style="text-align:center;margin-top:10px;"><p class="copyright">Copyright&nbsp;&copy;&nbsp;sinsai.info&nbsp;All&nbsp;Rights&nbsp;Reserved.&nbsp;by <a href="http://openstreetmap.jp/crisis/">OpenStreetMap Japan - Crisis Mapping Project</a></p></div> 
+	<!-- / footer --> 
+</div>
+<div id="debug"></div></DIV>
 <DIV class="ui-layout-east"><div id="map" class="smallmap"></div></DIV>
 
 ]]>

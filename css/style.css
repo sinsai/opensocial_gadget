@@ -108,8 +108,19 @@ div.incident div.description{
     border:1px dashed #cccccc;
 }
 
-lon,lat{
+div.lon{
     dislplay:none;
+    visibility:hidden;
+}
+
+div.lat{
+    dislplay:none;
+    visibility:hidden;
+}
+
+div.id{
+    dislplay:none;
+    visibility:hidden;
 }
 
 div.olControlAttribution{
@@ -117,4 +128,122 @@ div.olControlAttribution{
     background:#000000;
 }
 
+div.logo{
+    float:left;
+    margin-right:10px;
+}
 
+div.basicForm{
+    margin-top:10px;
+    float:right;
+}
+
+div.footer{
+    width: auto;
+    clear: both;
+    color: #fff;
+    background-color: #A8A8A8;
+    padding-bottom: 20px;
+}
+
+/* site footer */
+div.site-footer{
+    padding: 15px 15px 0 15px;
+    background: #FFFFFF;
+}
+
+/* footer menu */
+div.footermenu{
+    margin: 0 10px;
+    float: left;
+}
+
+div.footermenu ul{
+    list-style: none;
+    margin: 0 0 10px 0;
+}
+
+div.footermenu ul li{
+    list-style: none;
+    float: left;
+}
+
+div.footermenu ul li a{
+    color: #fff;
+    border-left: #fff 1px solid;
+    padding: 0 10px;
+    text-decoration: underline;
+}
+
+div.footermenu ul li a.item1{
+    border: none;
+    padding-left: 0;
+}
+
+div.footermenu ul li a:hover{
+    text-decoration: none;
+}
+
+/* footer credits */
+div.footer-credits{
+    float: right;
+    font-size: 70%;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0 0 20px 0;
+}
+/* footer credits links */
+div.footer-credits-links{
+	margin-bottom:4px;
+	clear: both;
+	overflow: hidden;
+	position: relative;
+	background-color: #FFF;
+	padding: 5px 10px 15px 5px;
+}
+div.footer-credits-links ul {
+	margin-bottom: 10px;
+	text-align: center;
+	float: none;
+}
+div.footer-credits-links ul li{
+	margin: 0px;
+	padding: 0px 10px;
+	vertical-align:middle;
+	display: inline-block;
+	float: none;
+}
+*html div.footer-credits-links ul li { /* for ie6　*/
+	vertical-align:middle;
+	display: inline !important;
+	float: none;
+}
+*:first-child+html div.footer-credits-links ul li { /* for ie7　*/
+	vertical-align:middle;
+	display: inline !important;
+	float: none;
+}
+div.footer-credit{
+	text-align:center;
+	color:#999999;
+	font-weight:bold;
+}
+
+p.copyright{
+	color:#FFFFFF;
+}
+p.copyright a{
+	color:#FFFFFF;
+}
+p.copyright a:link{
+        color:#FFFFFF;
+}
+p.copyright a:visited{
+        color:#FFFFFF;
+}
+p.copyright a:hover{
+        color:#FFFFFF;
+}
+p.copyright a:active{
+        color:#FFFFFF;
+}

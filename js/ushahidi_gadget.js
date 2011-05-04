@@ -39,6 +39,9 @@ $.ushahidi = function(options) {
         lonlat4326:function(lon,lat){
             return new OpenLayers.LonLat(lon,lat).transform(proj_4326,map.getProjectionObject());
         },
+        lonlat900913:function(lon,lat){
+            return new OpenLayers.LonLat(lon,lat).transform(map.getProjectionObject(),proj_4326);
+        },
         category :function(callback){
             var API = setting.endpoint + 'api?task=categories';
             $.getJSON(API, {}, function(json) {
@@ -115,7 +118,7 @@ $.ushahidi = function(options) {
             return new OpenLayers.LonLat(lon,lat);
         },
         icon:function(url){
-            var sz = new OpenLayers.Size(10, 10);
+            var sz = new OpenLayers.Size(16, 16);
             var calculateOffset = function(size) {
                 return new OpenLayers.Pixel(-(size.w/2), -size.h);
             };
