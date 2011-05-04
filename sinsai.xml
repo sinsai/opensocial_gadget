@@ -133,7 +133,7 @@ $(function($,data) {
     <ul>
         <li><a href="#incident-tab">レポート</a></li>
         <li><a href="#tabs-2">レポートの投稿</a></li>
-        <li><a href="#tabs-3">モバイル・携帯</a></li>
+        <li><a href="#tabs-3">携帯</a></li>
     </ul>
     <div id="incident-tab">
         <div id="holder">
@@ -187,28 +187,22 @@ $(function($,data) {
 
 <form id="search">
 <div class="logo">
-<a href="http://www.sinsai.info/ushahidi/"><img border="0" src="http://www.sinsai.info/ushahidi/media/img/logo.gif" alt="東北沖地震 震災情報サイト sinsai.info: 3/11 東北地方太平洋沖地震,Earthquake Tohoku area in Japan 3/11" /></a>
+<img src="http://nati.sinsai.info/gadget/images/logo-wide.gif"/>
 </div>
 <div class="basicForm">
 <div class="field">
-<label>住所</label><input type="text" size="40" id="address" value="気仙沼"/>
+<label>住所</label><input type="text"  id="address" value="気仙沼"/>
 </div>
 <div class="field">
-<label>縮尺</label><select id="zoom" name="zoom"></select>
-</div>
-<div class="field">
-<label>キーワード</label><input type="text" size="40" id="keyword"/>
-</div>
-</div>
-<br style="clear:both;"/>
-<div class="field">
-<div id="categoryfield">
-</div>
+<label>×キーワード</label><input type="text" id="keyword"/>
 </div>
 <div class="field">
 <input id="search_button" type="submit" value="検索"/>
 </div>
+</div>
 </DIV>
+<input type="hidden" id="zoom" name="zoom"/>
+<input type="hidden" value="0" name="catID" id="catID" />
 </form>
 
 <DIV class="ui-layout-south">
@@ -268,7 +262,8 @@ $(function($,data) {
 </div>
 <div id="debug"></div></DIV>
 <DIV class="ui-layout-east"><div id="map" class="smallmap"></div></DIV>
-
-]]>
+<DIV class="ui-layout-west">
+<div id="categoryfield"></div>
+</DIV>]]>
 </Content>
 </Module>

@@ -181,7 +181,7 @@ function refreshIncidents(){
         "sw":southwest,
         "ne":northeast,
         "keyword":$("#keyword").val(),
-        "c":$("input[name=catID]:checked").val() ? $("input[name=catID]:checked").val()  : 0,
+        "c":$("#catID").val() ? $("#catID").val()  : 0,
         "offset":offset
     },renderIncidents);
     saveHistory();
@@ -269,7 +269,10 @@ function initMap(){
         eventListeners: {
             "moveend": mapEvent
             //"zoomend": mapEvent,
-        }
+        },
+        controls:[],
+        projection: proj_900913,
+        'displayProjection': proj_4326
     });
 
     var osm = new OpenLayers.Layer.OSM("地図 (by OSM)");
@@ -300,6 +303,9 @@ function initMap(){
 
     map.addLayers([osm,virtualearth_hybrid,google_hybrid,kml]);
     map.addControl(new OpenLayers.Control.LargeLayerSwitcher());
+    map.addControl(new OpenLayers.Control.Navigation());
+    map.addControl(new OpenLayers.Control.PanZoomBar());
+    map.addControl(new OpenLayers.Control.ScaleLine());
     map.zoomToMaxExtent();
     var click = new OpenLayers.Control.Click();
     map.addControl(click);
@@ -329,34 +335,36 @@ function search(){
 }
 
 function initForm(){
-    //set up form
-    var options = ""
-    $.each(ushahidi.zoomLevel, function(key){
-        var value = this;
-        var selected = key == defaultZoom ? "selected" : "" ;
-        options += "<option value='"+ key +"' " + selected +  " >" + ushahidi.zoom2DistanceLabel(key) + "</option>";
-    });
-    $("#zoom").append(options);
-    //$("#zoom").val(defaultZoom);
+    //set up form    
+    $("#zoom").val(defaultZoom);
+    var selectCategory = function(catID,radio){
+        radio.click(function(){
+            $("#categoryfield label").removeClass("selected");
+            radio.addClass("selected");
+            $("#catID").val(catID);
+            search();
+        });
+    }
+    
     ushahidi.category(function(json){
         var index = 2;
-        var num = Math.floor($(window).width()/180); //label width
-        var radio = '<input type="radio" value="0" name="catID" id="0" /><label for="0" ><img src="http://www.sinsai.info/ushahidi/media/img/all.png" alt="すべて"/>全て</label>';
+        var radio = $('<label class="selected"><img src="http://www.sinsai.info/ushahidi/media/img/all.png" alt="すべて"/>全て</label><br style="clear:both;"/>');
+        $("#catID").val(0);
+        selectCategory(0,radio);
         $("#categoryfield").append(radio);
         $.each(json,function(){
-            var radio = '<input type="radio" value="' + this.category.id + '" name="catID" id="'+ this.category.id +'" /><label for="'+ this.category.id +'" ><img src="' + this.category.image_thumb + '" alt="' + this.category.title + '"/>'+this.category.title+'</label>';
+            var radio = $('<label><img src="' + this.category.image_thumb + '" alt="' + this.category.title + '"/>'+this.category.title+'</label><br style="clear:both;"/>');
+            selectCategory(this.category.id,radio);
             $("#categoryfield").append(radio);
-            if( index % num == 0 ){
-                $("#categoryfield").append("<br style='clear:both;'/>");
-            }
             index++;
             ushahidi.catICON[this.category.id] = this.category.image_thumb;
         });
         
         $(".category").addClass("ui-corner-all");
     });
-    
+
     $("#search").submit(function(){
+        $("#zoom").val(13);
         search();
         return false;
     });
@@ -375,14 +383,16 @@ function initLayout(){
         applyDefaultStyles: true,
         resizable:  true,
         slidable: true,
-        north__size:230,
+        north__size:80,
         south__size:50,
-        east__size:Math.floor($(window).width() / 2)
+        west__size:140,
+        east__size:Math.floor($(window).width() / 2.5)
     });
     $( "#tabs" ).tabs();
     $(".ui-layout-center").tabs().find(".ui-tabs-nav").sortable({ axis: 'x', zIndex: 2 })
     $(".ui-layout-center").removeClass("ui-corner-all");
     $(".ui-layout-center").css("padding","0px");
+    $(".ui-layout-center").css("overflow-x","hidden");
     $(".ui-layout-south").css("background-color","#A8A8A8");
     layout.resizeAll();
 }
@@ -396,7 +406,7 @@ function loadHistory(){
             }
             $("#address").val(data.address);
             $("#keyword").val(data.keyword ? data.keyword : "");
-            $("input[name=catID]").val([data.c]);
+            $("#catID").val([data.c]);
             $("#zoom").val(data.zoom);
             search();
         });
@@ -417,8 +427,8 @@ function saveHistory(){
     if($("#zoom").val()){
         data.zoom =  $("#zoom").val()
     }
-    if($("input[name=catID]:checked").val()){
-        data.c = $("input[name=catID]:checked").val();
+    if($("#catID").val()){
+        data.c = $("#catID").val();
     }
     if($("#keyword").val()){
         data.keyword = $("#keyword").val();
