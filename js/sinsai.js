@@ -9,9 +9,12 @@ var southwest ;
 var northeast ;
 var offset = 0;
 var limit = 50;
+var tabs;
 if(!$.support.opacity){
     limit = 10;
 }
+
+var comment_offset = 0;
 
 var ushahidi;
 var searchLayer = "検索結果";
@@ -109,6 +112,15 @@ function addPopup(place,incident){
         return popup;
 }
 
+function renderComments(data){
+    if(data != null){
+        var clone = $("#comments_template").clone();
+        clone.attr("id","comments" + comment_offset);
+        $("#comment_holder").append(clone);
+        $('#comments' + offset).render({ comments: data }).show();
+    }
+}
+
 function renderIncidents(data){
 
     if(data != null){
@@ -132,7 +144,7 @@ function renderIncidents(data){
         var clone = $("#incidents_template").clone();
         clone.attr("id","incidents" + offset);
         $.log(offset);
-        $("#holder").append(clone);
+        $("#incident_holder").append(clone);
         $('#incidents' + offset).render({ incidents: data }).show();
         $(".description").hide();
         $(".incident").each(function () {
@@ -187,6 +199,12 @@ function refreshIncidents(){
     saveHistory();
 }
 
+function refreshComments(){
+    ushahidi.comments({
+        "offset":comment_offset
+    },renderComments);
+}
+
 function mapEvent(event) {
     var center = map.getCenter();
     var zoom = map.zoom;
@@ -207,7 +225,7 @@ function mapEvent(event) {
     southwest = bound .left+','+bound .bottom;
     northeast = bound.right+','+bound .top;
     offset = 0;
-   $("#holder").empty();
+   $("#incident_holder").empty();
     refreshIncidents();
 }
 
@@ -319,9 +337,10 @@ function search(){
         $("body").mask("読み込み中...");
         ushahidi.address2Lonlat($("#address").val(),function(lonlat){
             if(lonlat == null){
-                 $("body").unmask();
-                 error("住所の読み込みに失敗しました");
-                return;
+                 //$("body").unmask();
+                 //error("住所の読み込みに失敗しました");
+                //return;
+                lonlat = map.getCenter();
             }
             var center = map.getCenter();
             var newCenter = ushahidi.lonlat(lonlat.lon,lonlat.lat);
@@ -369,12 +388,18 @@ function initForm(){
         return false;
     });
     
-    $("#more_button").click(function(){
+    $("#more_incident_button").click(function(){
         $("body").mask("読み込み中...");
         offset += limit;
-        $.log("search" + offset);
         refreshIncidents();
+        
     });
+    
+    $("#more_comment_button").click(function(){
+        comment_offset += limit;
+        refreshComments();
+    });
+    refreshComments();
 }
 
 function initLayout(){
@@ -388,7 +413,7 @@ function initLayout(){
         west__size:140,
         east__size:Math.floor($(window).width() / 2.5)
     });
-    $( "#tabs" ).tabs();
+    tabs = $( "#tabs" ).tabs();
     $(".ui-layout-center").tabs().find(".ui-tabs-nav").sortable({ axis: 'x', zIndex: 2 })
     $(".ui-layout-center").removeClass("ui-corner-all");
     $(".ui-layout-center").css("padding","0px");
@@ -436,12 +461,4 @@ function saveHistory(){
     $.post('/appdata/@viewer/@self', data, function() {}, 'data');
 }
 
-$(function($,data) {
-    //set up map
-    ushahidi = $.ushahidi({"endpoint":endpoint,"limit":limit});
-    initMap();
-    initForm();
-    initLayout();
-    search();
-});
 

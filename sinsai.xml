@@ -128,17 +128,43 @@ $(function($,data) {
 <script src="http://nati.sinsai.info/gadget/js/LargeLayerSwitcher.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/ushahidi_gadget.js"></script> 
 <script src="http://nati.sinsai.info/gadget/js/openlayers_opensocial.js"></script>
-<script src="http://nati.sinsai.info/gadget/js/sinsai.js"></script> 
+<script src="http://nati.sinsai.info/gadget/js/sinsai.js"></script>
+<script language="javascript">
+$(function($,data) {
+    //set up map
+    ushahidi = $.ushahidi({"endpoint":endpoint,"limit":limit});
+    initMap();
+    initForm();
+    initLayout();
+    search();
+});
+
+</script> 
 <DIV class="ui-layout-center">
     <ul>
         <li><a href="#incident-tab">レポート</a></li>
+        <li><a href="#comment">新着コメント</a></li>
         <li><a href="#tabs-2">レポートの投稿</a></li>
         <li><a href="#tabs-3">携帯</a></li>
     </ul>
-    <div id="incident-tab">
-        <div id="holder">
+    <div id="comment">
+        <div id="comment_holder">
         </div>
-        <input type="button" id="more_button" value="次へ"/>
+        <input type="button" id="more_comment_button" value="次へ"/>
+        <div id="comments_template" style="display:none;">
+            <div repeat="${comments}" class="comments">
+                <div class="comment">
+                    <span class="date">${Cur.comment_date} </span>
+                    <a href="http://www.sinsai.info/ushahidi/reports/view/${Cur.incident_id}" target="_blank">${Cur.comment_description }
+                    レポートを見る</a><br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="incident-tab">
+        <div id="incident_holder">
+        </div>
+        <input type="button" id="more_incident_button" value="次へ"/>
         <div id="incidents_template" style="display:none;">
             <div repeat="${incidents}" class="incidents">
                 <div class="incident">

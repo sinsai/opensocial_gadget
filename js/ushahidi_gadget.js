@@ -63,6 +63,19 @@ $.ushahidi = function(options) {
                 callback(json.payload.incidents,offset);
             });
         },
+        comments: function(options,callback){
+            var defaults = {
+                task:"comments",
+                by:"all",
+                limit:setting.limit,
+                offset:0
+            };
+            var data = $.extend(defaults, options);
+            var API = setting.endpoint  +"api" ;
+            $.getJSON(API, data, function(json,status) {
+                callback(json.payload.comments,offset);
+            });
+        },
         lonlat2Address:function(lonlat,callback){
             var lonlat = lonlat.transform(map.getProjectionObject(),proj_4326);
             var API = 'http://www.finds.jp/ws/rgeocode.php?json&lat=' + lonlat.lat + '&lon=' + lonlat.lon;
