@@ -10,100 +10,7 @@
 <Require feature="views" />
 <Require feature="opensocial-0.8" />
 </ModulePrefs>
-<Content type="html" view="profile,home"><![CDATA[
-<link rel="stylesheet" href="http://openlayers.org/dev/theme/default/style.css" type="text/css"> 
-<link rel="stylesheet" href="http://openlayers.org/dev/theme/default/google.css" type="text/css"> 
-<link type="text/css" href="http://nati.sinsai.info/gadget/css/south-street/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
-<link href="http://nati.sinsai.info/gadget/css/jquery.loadmask.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="http://nati.sinsai.info/gadget/css/jquery.notifyBar.css" type="text/css" media="screen"  />
-<link rel="stylesheet" href="http://nati.sinsai.info/gadget/css/style.css" type="text/css" media="screen"  />
-<style type="text/css">
-<!--
-
-#new_info{
-    margin-top:8px;
-    margin-bottom:8px;
-    border-bottom:1px solid #333333;
-}
-
-#holder{
-    height:400px;
-    max-height:500px;
-    overflow:hide;
-};
-
-#holder a{
-    color:#000000;
-    text-decoration:none;
-}
-
--->
-</style>
-<script src="http://nati.sinsai.info/gadget/js/opensocial-jquery.min.js"></script>
-<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery-ui-1.8.11.custom.min.js"></script>
-<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
-<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/opensocial-jquery.templates.min.js"></script>
-<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.json-2.2.min.js"></script>
-<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.loadmask.min.js"></script>
-<script type="text/javascript" src="http://nati.sinsai.info/gadget/js/jquery.loadmask.min.js"></script>
-<script src="http://layout.jquery-dev.net/lib/js/jquery.layout-latest.js"></script>
-<script src="http://maps.google.com/maps/api/js?sensor=false"></script> 
-<script src="http://openlayers.org/dev/OpenLayers.js"></script> 
-<script src="http://nati.sinsai.info/gadget/js/openlayers_opensocial.js"></script>
-<script src="http://nati.sinsai.info/gadget/js/timeline.js"></script>
-<script src="http://nati.sinsai.info/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
-<script src="http://nati.sinsai.info/gadget/js/jquery.notifyBar.js"></script>
-<script src="http://nati.sinsai.info/gadget/js/ushahidi_gadget.js"></script> 
-<script src="http://nati.sinsai.info/gadget/js/sinsai.js"></script> 
-
-
-<script language="javascript">
-$(function($,data) {
-    //set up map
-    ushahidi = $.ushahidi({"endpoint":endpoint,"limit":3});
-    $.getData('/appdata/@viewer/@self', {}, function(data) {
-        $.each(data, function(userId, data) {
-            if( data.address == null || data.sw == null || data.ne == null ){
-                message("住所を入力してください　<a href=\"javascript:$.view('canvas', { url: 'test' });\">詳細画面へ </a>");
-                
-            }
-            ushahidi.incidents({
-                "sw":data.sw,
-                "ne":data.ne,
-                "keyword":data.keyword,
-                "c":data.c,
-            },function(data){
-                var clone = $("#incidents_template").clone();
-                    clone.attr("id","incidents" + offset);
-                    $("#holder").append(clone);
-                    $('#incidents' + offset).render({ incidents: data }).show();
-            });
-            $(window).adjustHeight();
-        });
-    });
-    $("#more_button").click(function(){
-        $.view('canvas');
-    });
-});
-
-
-</script>
-<a href="http://www.sinsai.info/ushahidi/"><img src="http://www.sinsai.info/ushahidi/media/img/logo.gif" width="250px"></a>
-<div id="new_info">最近の情報</div>
-<div id="holder">
-</div>
-<input type="button" id="more_button" value="詳細画面 (検索＆地図)"/>
-<div id="incidents_template" style="display:none;">
-    <div repeat="${incidents}" class="incidents">
-        <div class="incident">
-            <span class="date">${Cur.incident.incidentdate } </span>
-            <div class="title"> <a href="http://www.sinsai.info/ushahidi/reports/view/${Cur.incident.incidentid}" target="_blank">${Cur.incident.incidenttitle } </a></div>
-        </div>
-    </div>
-</div>
-
-]]></Content>
-<Content type="html" view="canvas"><![CDATA[
+<Content type="html" view="canvas,profile,home"><![CDATA[
 <link rel="stylesheet" href="http://nati.sinsai.info/gadget/css/openlayers.css" type="text/css"> 
 <link rel="stylesheet" href="http://nati.sinsai.info/gadget/css/google.css" type="text/css"> 
 <link type="text/css" href="http://nati.sinsai.info/gadget/css/south-street/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
@@ -127,14 +34,19 @@ $(function($,data) {
 <script src="http://nati.sinsai.info/gadget/js/jquery.notifyBar.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/LargeLayerSwitcher.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/ushahidi_gadget.js"></script> 
+<script src="http://nati.sinsai.info/gadget/js/ushahidi_gadget.js"></script> 
 <script src="http://nati.sinsai.info/gadget/js/openlayers_opensocial.js"></script>
 <script src="http://nati.sinsai.info/gadget/js/sinsai.js"></script>
 <script language="javascript">
 $(function($,data) {
+    var address = data.address || "気仙沼";
+    var zoom = data.zoom || 6;
     //set up map
     ushahidi = $.ushahidi({"endpoint":endpoint,"limit":limit});
     initMap();
     initForm();
+    $("#address").val(address);
+    $("#zoom").val(zoom);
     initLayout();
     search();
 });
@@ -173,16 +85,9 @@ $(function($,data) {
                     </span>
                     <span class="date">${Cur.incident.incidentdate } </span>
                     <div class="title">${Cur.incident.incidenttitle } </div>
-                    <div class="description">
-                        ${Cur.incident.incidentdescription }
-                        <a href="http://www.sinsai.info/ushahidi/reports/view/${Cur.incident.incidentid}">コメントする</a><br>
-                        <span repeat="${Cur.media}" class="link" >
-                        <a href="${Cur.link}" target="brank">情報元リンク${Cur.index}</a><br>
-                        </span>
-                        <div class="id">${Cur.incident.incidentid}</div>
-                        <div class="lon">${Cur.incident.locationlongitude}</div>
-                        <div class="lat">${Cur.incident.locationlatitude}</div>
-                    </div>
+                    <div class="id">${Cur.incident.incidentid}</div>
+                    <div class="lon">${Cur.incident.locationlongitude}</div>
+                    <div class="lat">${Cur.incident.locationlatitude}</div>
                 </div>
             </div>
         </div>
@@ -212,7 +117,7 @@ $(function($,data) {
 <div class="ui-layout-north">
 
 <form id="search">
-<div class="logo">
+<div id="logo">
 <img src="http://nati.sinsai.info/gadget/images/logo-wide.gif"/>
 </div>
 <div class="basicForm">
@@ -220,10 +125,14 @@ $(function($,data) {
 <label>住所</label><input type="text"  id="address" value="気仙沼"/>×
 </div>
 <div class="field">
-<label>キーワード</label><input type="text" id="keyword"/>
+<label>キーワード</label><input type="text" size="15" id="keyword"/>
 </div>
 <div class="field">
 <input id="search_button" type="submit" value="検索"/>
+</div>
+<br style="clear:both;"/>
+<div class="toggleMenu">
+表示切り替え：<a id="pinWest">検索オプション</a><a id="pinEast">地図</a>
 </div>
 </div>
 </div>

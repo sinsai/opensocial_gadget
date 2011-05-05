@@ -22,7 +22,18 @@
     font-size:small;
 }
 
+.toggleMenu{
+    float:right;
+    font-size:small;
+}
 
+#pinWest{
+    margin:3px;
+}
+
+#pinEast{
+     margin:3px;
+}
 
 .ui-layout-pane-center .ui-tabs-nav {
     /* don't need border or rounded corners - tabs 'fill' the pane */
@@ -39,14 +50,20 @@ div.field{
 }
 
 input{
-    font-size:1em;
+    font-size:small;
     border: 1px solid #CCC; 
 }
 
 label {
     display:block;
     float:left;
+    font-size:small;
     vertical-align:bottom;
+}
+
+#logo{
+    margin:0px;
+    float:left;
 }
 
 #categoryfield {
@@ -149,16 +166,19 @@ div.incident div.description{
 div.lon{
     dislplay:none;
     visibility:hidden;
+    position:absolute;
 }
 
 div.lat{
     dislplay:none;
     visibility:hidden;
+    position:absolute;
 }
 
 div.id{
     dislplay:none;
     visibility:hidden;
+    position:absolute;
 }
 
 div.olControlAttribution{
@@ -166,21 +186,15 @@ div.olControlAttribution{
     background:#000000;
 }
 
-div.logo{
-    float:left;
-    margin-right:10px;
-}
 
 div.basicForm{
-    margin-top:10px;
     float:right;
 }
 
 div.basicForm label {
-    display:block;
-    height:30px;
     padding-top:5px;
     vertical-align:bottom;
+    text-align:right;
 }
 
 div.footer{
@@ -323,6 +337,14 @@ div.incidents{
 	filter: alpha(opacity=100);
 	background: #FD9 !important;
 	border-color: #CB7 !important;
+}
+
+
+.ui-layout-button-pin-up { 
+    background:#FFFFFF;
+}
+.ui-layout-button-pin-down{ 
+    background:#B4EDC5;
 }
 
 

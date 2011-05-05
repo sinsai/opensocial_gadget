@@ -3,10 +3,11 @@ var proj_4326 = new OpenLayers.Projection('EPSG:4326');
 var longitude = 143.48981665651;
 var latitude = 36.609377136228;
 var defaultZoom = 6;
-var endpoint = "http://nati.sinsai.info/ushahidi/";
+var endpoint = "http://www.sinsai.info/ushahidi/";
 var report_submit_url = endpoint + "reports/submit";
 var southwest ;
 var northeast ;
+var layout;
 var offset = 0;
 var limit = 50;
 var tabs;
@@ -146,10 +147,9 @@ function renderIncidents(data){
         $.log(offset);
         $("#incident_holder").append(clone);
         $('#incidents' + offset).render({ incidents: data }).show();
-        $(".description").hide();
         $(".incident").each(function () {
             var flip = 0;
-            var description = $(".description",this);
+            
             var data = {
                 incidenttitle:$(".title",this).text(),
                 incidentdate: $(".date",this).text(),
@@ -158,18 +158,15 @@ function renderIncidents(data){
             var title = $(".title",this).text();
             var date = $(".date",this).text();
             var place = ushahidi.lonlat4326($(".lon",this).text(),$(".lat",this).text());
-            var body = description.html() ;
+   
             var popup;
-            body = body.replace(/\r\n/g, "<br/>");
-            body = body.replace(/(\n|\r)/g, "<br/>");
-            description.html(body);
+            
             //for IE6
                 $("img",this).each(function(){
                     $(this).attr("src",$(this).attr("src").replace(/http:\/\/(.+).googleusercontent.com\/gadgets\//,""));
                 });
             $(".title",this).click(function(){
                 if(flip++ % 2 == 0){
-                    description.show();
                    preventRefresh = true;
                     if(popup == null){
                         popup = addPopup(place,data);
@@ -177,7 +174,6 @@ function renderIncidents(data){
                         popup.show();
                     }
                 }else{
-                    description.hide();
                     popup.hide();
                 }
             });
@@ -404,22 +400,38 @@ function initForm(){
 
 function initLayout(){
     //set up layout
-    var layout = $('body').layout({
+    var north_size = 80;
+
+    
+    layout = $('body').layout({
         applyDefaultStyles: true,
         resizable:  true,
         slidable: true,
-        north__size:80,
+        north__size:$(window).width() < 500 ? 150 : 80,
         south__size:50,
         west__size:140,
-        east__size:Math.floor($(window).width() / 2.5)
+        east__size:$(window).width() < 500 ? Math.floor($(window).width()) /1.2 : Math.floor($(window).width()) /2
     });
+
+
+
     tabs = $( "#tabs" ).tabs();
     $(".ui-layout-center").tabs().find(".ui-tabs-nav").sortable({ axis: 'x', zIndex: 2 })
     $(".ui-layout-center").removeClass("ui-corner-all");
     $(".ui-layout-center").css("padding","0px");
     $(".ui-layout-center").css("overflow-x","hidden");
     $(".ui-layout-south").css("background-color","#A8A8A8");
+    
+    layout.addPinBtn( "#pinWest", "west" );
+	layout.addPinBtn( "#pinEast", "east" )
+    
     layout.resizeAll();
+    
+    if($(window).width() < 500){
+        layout.close("west");
+        layout.close("east");
+        $(window).adjustHeight();
+    }
 }
 
 function loadHistory(){
