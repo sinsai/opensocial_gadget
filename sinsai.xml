@@ -140,11 +140,11 @@ $(function($,data) {
 });
 
 </script> 
-<DIV class="ui-layout-center">
+<div class="ui-layout-center">
     <ul>
         <li><a href="#incident-tab">レポート</a></li>
+        <li><a href="#tabs-2">投稿</a></li>
         <li><a href="#comment">新着コメント</a></li>
-        <li><a href="#tabs-2">レポートの投稿</a></li>
         <li><a href="#tabs-3">携帯</a></li>
     </ul>
     <div id="comment">
@@ -208,8 +208,8 @@ $(function($,data) {
 			</div>
     </div>
     
-</DIV>
-<DIV class="ui-layout-north">
+</div>
+<div class="ui-layout-north">
 
 <form id="search">
 <div class="logo">
@@ -217,21 +217,21 @@ $(function($,data) {
 </div>
 <div class="basicForm">
 <div class="field">
-<label>住所</label><input type="text"  id="address" value="気仙沼"/>
+<label>住所</label><input type="text"  id="address" value="気仙沼"/>×
 </div>
 <div class="field">
-<label>×キーワード</label><input type="text" id="keyword"/>
+<label>キーワード</label><input type="text" id="keyword"/>
 </div>
 <div class="field">
 <input id="search_button" type="submit" value="検索"/>
 </div>
 </div>
-</DIV>
+</div>
 <input type="hidden" id="zoom" name="zoom"/>
 <input type="hidden" value="0" name="catID" id="catID" />
 </form>
 
-<DIV class="ui-layout-south">
+<div class="ui-layout-south">
 <div class="footer">
 			<!-- footer credits --> 
 			<div class="footer-credits"> 
@@ -286,10 +286,11 @@ $(function($,data) {
       		<div style="text-align:center;margin-top:10px;"><p class="copyright">Copyright&nbsp;&copy;&nbsp;sinsai.info&nbsp;All&nbsp;Rights&nbsp;Reserved.&nbsp;by <a href="http://openstreetmap.jp/crisis/">OpenStreetMap Japan - Crisis Mapping Project</a></p></div> 
 	<!-- / footer --> 
 </div>
-<div id="debug"></div></DIV>
-<DIV class="ui-layout-east"><div id="map" class="smallmap"></div></DIV>
-<DIV class="ui-layout-west">
+<!-- <div id="debug"></div> --> 
+</div>
+<div class="ui-layout-east"><div id="map" class="smallmap"></div></div>
+<div class="ui-layout-west">
 <div id="categoryfield"></div>
-</DIV>]]>
+</div>]]>
 </Content>
 </Module>

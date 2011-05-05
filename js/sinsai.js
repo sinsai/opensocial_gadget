@@ -24,7 +24,7 @@ var preventRefresh = true;
 var popup;
 
 $.log = function(msg){
-   $("#debug").html(msg + "<br>" +  $("#debug").html());
+   //$("#debug").html(msg + "<br>" +  $("#debug").html());
 }
 
 //overide openlayers request class to opensocial-jquery
