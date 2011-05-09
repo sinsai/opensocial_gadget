@@ -9,7 +9,7 @@ var southwest ;
 var northeast ;
 var layout;
 var offset = 0;
-var limit = 50;
+var limit = 100;
 var tabs;
 if(!$.support.opacity){
     limit = 10;
@@ -32,7 +32,6 @@ $.log = function(msg){
 
 OpenLayers.Request.issue = function(config) {        
         // apply default config - proxy host may have changed
-        $.log("READ!");
         var defaultConfig = OpenLayers.Util.extend(
             this.DEFAULT_CONFIG,
             {proxy: OpenLayers.ProxyHost}
@@ -119,6 +118,8 @@ function renderComments(data){
         clone.attr("id","comments" + comment_offset);
         $("#comment_holder").append(clone);
         $('#comments' + offset).render({ comments: data }).show();
+        $('.comment').removeClass('odd');
+        $('.comment:odd').addClass('odd');
     }
 }
 
@@ -147,6 +148,8 @@ function renderIncidents(data){
         $.log(offset);
         $("#incident_holder").append(clone);
         $('#incidents' + offset).render({ incidents: data }).show();
+        $('.incident').removeClass('odd');
+        $('.incident:odd').addClass('odd');
         $(".incident").each(function () {
             var flip = 0;
             
@@ -313,9 +316,21 @@ function initMap(){
                     maxDepth: 2
                 })
             })
-        })
+        });
 
-    map.addLayers([osm,virtualearth_hybrid,google_hybrid,kml]);
+    var takidasi = new OpenLayers.Layer.Vector("炊き出しマップ", {
+            strategies: [new OpenLayers.Strategy.Fixed()],
+            protocol: new OpenLayers.Protocol.HTTPOpenSocial({
+                url: "http://maps.google.co.jp/maps/ms?hl=ja&ie=UTF8&brcurrent=3,0x5f8a281688bb7435:0x5a71ac24ed513392,1,0x5f8a2815e538e245:0xb1632cc050d2f733&t=h&msa=0&output=nl&msid=216614052816461214939.00049e49594f07450fe63",
+                format: new OpenLayers.Format.KML({
+                    extractStyles: true, 
+                    extractAttributes: true,
+                    maxDepth: 2
+                })
+            })
+        });
+
+    map.addLayers([osm,virtualearth_hybrid,google_hybrid,kml,takidasi]);
     map.addControl(new OpenLayers.Control.LargeLayerSwitcher());
     map.addControl(new OpenLayers.Control.Navigation());
     map.addControl(new OpenLayers.Control.PanZoomBar());
@@ -377,7 +392,7 @@ function initForm(){
         
         $(".category").addClass("ui-corner-all");
     });
-
+    
     $("#search").submit(function(){
         $("#zoom").val(13);
         search();
@@ -449,9 +464,6 @@ function loadHistory(){
         });
     });
 }
-
-
-
 
 function saveHistory(){
     var data = {

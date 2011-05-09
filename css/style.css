@@ -50,12 +50,13 @@ div.field{
 }
 
 input{
-    font-size:small;
+    font-size:large;
     border: 1px solid #CCC; 
 }
 
 label {
     display:block;
+    
     float:left;
     font-size:small;
     vertical-align:bottom;
@@ -140,6 +141,10 @@ div.incident{
     margin-bottom:3px;
 }
 
+div.odd{
+    background-color:#eeeeee;
+}
+
 div.incident:hover{
      background:#B4EDC5;
 }
@@ -189,12 +194,18 @@ div.olControlAttribution{
 
 div.basicForm{
     float:right;
+    margin:10px;
 }
 
 div.basicForm label {
     padding-top:5px;
+    font-size:large;
     vertical-align:bottom;
     text-align:right;
+}
+
+div.basicForm input{
+    margin-right:3px;
 }
 
 div.footer{
