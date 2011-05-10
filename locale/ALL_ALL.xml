@@ -1,0 +1,38 @@
+<messagebundle>
+  <msg name="base_url">http://www.sinsai.info/gadget/</msg>
+  <msg name="ushahidi_url">http://www.sinsai.info/ushahidi/</msg>
+  <msg name="report"> Report</msg>
+  <msg name="post">Post</msg>
+  <msg name="new_comment">New Comments</msg>
+  <msg name="mobile">Mobile</msg>
+  <msg name="how_to_post">
+<div class="additional-content">
+					How to Report
+					<ol>
+					    <li><a href="http://www.sinsai.info/ushahidi/reports/submit/" class="dialog">Click the map or by filling this form</a></li>
+												<li>By sending an email to   <a href="mailto:report@sinsai.info">report@sinsai.info</a></li>						<li>By sending a tweet with the hashtag/s  <strong>jishin</strong> or <strong>j_j_helpme</strong> or <strong>hinan</strong> or <strong>anpi</strong> or <strong>311care</strong></li>
+					</ol>
+
+				</div>
+  </msg>
+  <msg name="mobile_apps">
+			<h3>Mobile＆Apps</h3>
+			Shot QR code 
+			or access sinsai.info from your mobile phone
+			You can also use 
+			<a href="https://market.android.com/details?id=sinsai.info.android.app&amp;feature=search_result">Android Apps</a>
+  </msg>
+  <msg name="address">Address</msg>
+  <msg name="keyword">Keyword</msg>
+  <msg name="switch_view">Switch view</msg>
+  <msg name="search">Search</msg>
+  <msg name="search_option">Search Option</msg>
+  <msg name="map">Map</msg>
+  <msg name="next">Next</msg>
+  <msg name="footer"> 
+					<li><a class="item1 dialog" href="http://www.sinsai.info/ushahidi/page/index/9">About US</a></li> 
+					<li><a class="dialog" href="http://www.sinsai.info/ushahidi/contact">Contact US</a></li> 
+					<li><a class="dialog" href="https://spreadsheets.google.com/viewform?formkey=dGlnajlENUtFOFZnWlN2XzlqbklickE6MQ">Provide feedback</a></li>
+					<li><a href="http://www.sinsai.info/ushahidi/main" target="_blank">Previous Version UI</a></li>
+  </msg>
+</messagebundle> 

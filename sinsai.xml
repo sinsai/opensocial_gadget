@@ -4,8 +4,8 @@
     title_url="http://www.sinsai.info/" 
     author="Nachi Ueno" 
     author_email="nati.ueno@gmail.com">
-<Locale messages="http://nati.sinsai.info/gadget/locale/ALL_ALL.xml"/>
-<Locale lang="ja" messages="http://nati.sinsai.info/gadget/locale/ja_ALL.xml"/> 
+<Locale messages="http://www.sinsai.info/gadget/locale/ALL_ALL.xml"/>
+<Locale lang="ja" messages="http://www.sinsai.info/gadget/locale/ja_ALL.xml"/> 
 <Require feature="dynamic-height" />
 <Require feature="settitle" />
 <Require feature="views" />
