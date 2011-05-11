@@ -115,7 +115,7 @@ OpenLayers.RequestOpenSocial = {
             {proxy: OpenLayers.ProxyHost}
         );
         config = OpenLayers.Util.applyDefaults(config, defaultConfig);
-
+        
         // create request, open, and set headers
         var url = config.url;
         if(config.params) {
@@ -330,6 +330,7 @@ OpenLayers.Protocol.HTTPOpenSocial = OpenLayers.Class(OpenLayers.Protocol.HTTP, 
         var readWithPOST = (options.readWithPOST !== undefined) ?
                            options.readWithPOST : this.readWithPOST;
         var resp = new OpenLayers.Protocol.Response({requestType: "read"});
+        
         if(readWithPOST) {
             resp.priv = OpenLayers.RequestOpenSocial.POST({
                 url: options.url,

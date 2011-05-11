@@ -1,43 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?php echo '<?xml version="1.0" encoding="UTF-8"?>'?>
 <Module>
  <ModulePrefs title="震災復興支援sinsai.infoガジェット" 
     title_url="http://www.sinsai.info/" 
     author="Nachi Ueno" 
     author_email="nati.ueno@gmail.com">
-<Locale messages="http://www.sinsai.info/gadget/locale/ALL_ALL.xml"/>
-<Locale lang="ja" messages="http://www.sinsai.info/gadget/locale/ja_ALL.xml"/> 
+<Locale messages="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/locale/ALL_ALL.xml"/>
+<Locale lang="ja" messages="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/locale/ja_ALL.xml"/> 
 <Require feature="dynamic-height" />
 <Require feature="settitle" />
 <Require feature="views" />
 <Require feature="opensocial-0.8" />
 </ModulePrefs>
 <Content type="html" view="canvas,profile,home"><![CDATA[
-<link rel="stylesheet" href="__MSG_base_url__css/openlayers.css" type="text/css"> 
-<link rel="stylesheet" href="__MSG_base_url__css/google.css" type="text/css"> 
-<link type="text/css" href="__MSG_base_url__css/south-street/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
-<link href="__MSG_base_url__css/jquery.loadmask.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="__MSG_base_url__css/jquery.notifyBar.css" type="text/css" media="screen"  />
-<link rel="stylesheet" href="__MSG_base_url__css/style.css" type="text/css" media="screen"  />
-<script src="__MSG_base_url__js/opensocial-jquery.min.js"></script>
-<script type="text/javascript" src="__MSG_base_url__js/jquery-ui-1.8.11.custom.min.js"></script>
-<script type="text/javascript" src="__MSG_base_url__js/opensocial-jquery.autoHeight.min.js"></script>
-<script type="text/javascript" src="__MSG_base_url__js/opensocial-jquery.templates.min.js"></script>
-<script type="text/javascript" src="__MSG_base_url__js/jquery.json-2.2.min.js"></script>
-<script type="text/javascript" src="__MSG_base_url__js/jquery.loadmask.min.js"></script>
-<script type="text/javascript" src="__MSG_base_url__js/jquery.loadmask.min.js"></script>
+<link rel="stylesheet" href="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/css/openlayers.css" type="text/css"/> 
+<link rel="stylesheet" href="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/css/google.css" type="text/css"/> 
+<link type="text/css" href="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/css/south-street/jquery-ui-1.8.11.custom.css" rel="stylesheet" />
+<link href="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/css/jquery.loadmask.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/css/jquery.notifyBar.css" type="text/css" media="screen"  />
+<link rel="stylesheet" href="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/css/style.css" type="text/css" media="screen"  />
+<script src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/opensocial-jquery.min.js"></script>
+<script type="text/javascript" src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/jquery-ui-1.8.11.custom.min.js"></script>
+<script type="text/javascript" src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
+<script type="text/javascript" src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/opensocial-jquery.templates.min.js"></script>
+<script type="text/javascript" src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/jquery.json-2.2.min.js"></script>
+<script type="text/javascript" src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/jquery.loadmask.min.js"></script>
+<script type="text/javascript" src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/jquery.loadmask.min.js"></script>
 <script src="http://layout.jquery-dev.net/lib/js/jquery.layout-latest.js"></script>
 <script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6'></script>
 <script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAC99cU8JddvQOwYmQc58EvhTwkllQ1ylirtKWEj6gIkcaRzt0cxQ3dZF78whwStV1xjQiTdi4NnZ4eg'></script>
-<script type="text/javascript" src="__MSG_ushahidi_url__media/js/jquery.pngFix.js"></script> 
-<script src="__MSG_base_url__js/OpenLayers.js"></script> 
-<script src="__MSG_base_url__js/timeline.js"></script>
-<script src="__MSG_base_url__js/opensocial-jquery.autoHeight.min.js"></script>
-<script src="__MSG_base_url__js/jquery.notifyBar.js"></script>
-<script src="__MSG_base_url__js/LargeLayerSwitcher.js"></script>
-<script src="__MSG_base_url__js/ushahidi_gadget.js"></script> 
-<script src="__MSG_base_url__js/ushahidi_gadget.js"></script> 
-<script src="__MSG_base_url__js/openlayers_opensocial.js"></script>
-<script src="__MSG_base_url__js/sinsai.js"></script>
+<script type="text/javascript" src="http://<?php echo $_SERVER["SERVER_NAME"];?>/ushahidi/media/js/jquery.pngFix.js"></script> 
+<script src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/OpenLayers.js"></script> 
+<script src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/timeline.js"></script>
+<script src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/opensocial-jquery.autoHeight.min.js"></script>
+<script src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/jquery.notifyBar.js"></script>
+<script src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/LargeLayerSwitcher.js"></script>
+ 
+<script src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/openlayers_opensocial.js"></script>
+<script src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/ushahidi_gadget.js"></script>
+<script src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/js/sinsai.js"></script>
 <script language="javascript">
 $(function($,data) {
     var address = data.address || "気仙沼";
@@ -68,7 +68,7 @@ $(function($,data) {
             <div repeat="${comments}" class="comments">
                 <div class="comment">
                     <span class="date">${Cur.comment_date} </span>
-                    <a href="__MSG_ushahidi_url__reports/view/${Cur.incident_id}" class="dialog" target="_blank">${Cur.comment_description }
+                    <a href="http://<?php echo $_SERVER["SERVER_NAME"];?>/ushahidi/reports/view/${Cur.incident_id}" class="dialog" target="_blank">${Cur.comment_description }
                    </a><br>
                 </div>
             </div>
@@ -110,11 +110,11 @@ $(function($,data) {
 
 <form id="search">
 <div id="logo">
-<img src="__MSG_base_url__images/logo-wide.gif"/>
+<img src="http://<?php echo $_SERVER["SERVER_NAME"];?>/gadget/images/logo-wide.gif"/>
 </div>
 <div class="toggleMenu">
 __MSG_switch_view__：<a id="pinWest">__MSG_search_option__</a><a id="pinEast">__MSG_map__</a><br style="clear:both;"/>
-<a href="__MSG_ushahidi_url__alerts" class="">新着レポートをメール/RSSで受信する</a>
+<a href="http://<?php echo $_SERVER["SERVER_NAME"];?>/ushahidi/alerts" class="">新着レポートをメール/RSSで受信する</a>
 </div>
 <div class="basicForm">
 <div class="field">
@@ -137,7 +137,7 @@ __MSG_switch_view__：<a id="pinWest">__MSG_search_option__</a><a id="pinEast">_
 <div class="footer">
 			<!-- footer credits --> 
 			<div class="footer-credits"> 
-				the &nbsp; <a href="http://www.ushahidi.com/"><img src="__MSG_ushahidi_url__/media/img/footer-logo.png" alt="Ushahidi" style="vertical-align:middle" /></a>&nbsp; Platform
+				the &nbsp; <a href="http://www.ushahidi.com/"><img src="http://<?php echo $_SERVER["SERVER_NAME"];?>/ushahidi//media/img/footer-logo.png" alt="Ushahidi" style="vertical-align:middle" /></a>&nbsp; Platform
 			</div> 
 			<!-- / footer credits --> 
  
@@ -156,27 +156,27 @@ __MSG_switch_view__：<a id="pinWest">__MSG_search_option__</a><a id="pinEast">_
 				<ul> 
 					<li> 
 						<a href="http://aws.amazon.com/" target="_blank"> 
-							<img src="__MSG_ushahidi_url__/media/img/Powered-by-Amazon-Web-Services.jpeg" alt="Amazon-Web-Services" style="vertical-align:middle" /> 
+							<img src="http://<?php echo $_SERVER["SERVER_NAME"];?>/ushahidi/media/img/Powered-by-Amazon-Web-Services.jpeg" alt="Amazon-Web-Services" style="vertical-align:middle" /> 
 						</a> 
 					</li> 
 					<li> 
 						<a href="http://heartbeats.jp/" target="_blank"> 
-							<img src="__MSG_ushahidi_url__/media/img/powered-by-heartbeats.gif" alt="heartbeats" style="vertical-align:middle" /> 
+							<img src="http://<?php echo $_SERVER["SERVER_NAME"];?>/ushahidi/media/img/powered-by-heartbeats.gif" alt="heartbeats" style="vertical-align:middle" /> 
 						</a> 
 					</li> 
 					<li> 
 						<a href="http://www.gree.co.jp/" target="_blank"> 
-							<img src="__MSG_ushahidi_url__/media/img/powered-by-gree.gif" alt="gree" style="vertical-align:middle" /> 
+							<img src="http://<?php echo $_SERVER["SERVER_NAME"];?>/ushahidi/media/img/powered-by-gree.gif" alt="gree" style="vertical-align:middle" /> 
 						</a> 
 					</li> 
 					<li> 
 						<a href="http://www.nttdata.co.jp/" target="_blank"> 
-							<img src="__MSG_ushahidi_url__/media/img/nttdata-gi.gif" alt="nttdata" style="vertical-align:middle" /> 
+							<img src="http://<?php echo $_SERVER["SERVER_NAME"];?>/ushahidi/media/img/nttdata-gi.gif" alt="nttdata" style="vertical-align:middle" /> 
 						</a> 
 					</li> 
 					<li> 
 						<a href="http://www.yahoo.co.jp/" target="_blank"> 
-							<img src="__MSG_ushahidi_url__/media/img/logo_yahoo.gif" alt="yahoo" style="vertical-align:middle" /> 
+							<img src="http://<?php echo $_SERVER["SERVER_NAME"];?>/ushahidi/media/img/logo_yahoo.gif" alt="yahoo" style="vertical-align:middle" /> 
 						</a> 
 					</li> 
 				</ul> 

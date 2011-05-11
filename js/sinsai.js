@@ -410,7 +410,7 @@ function initLayout(){
         applyDefaultStyles: true,
         resizable:  true,
         slidable: true,
-        north__size:$(window).width() < 500 ? 150 : 80,
+        north__size:$(window).width() < 500 ? 150 : 90,
         south__size:50,
         west__size:140,
         east__size:$(window).width() < 500 ? Math.floor($(window).width()) /1.2 : Math.floor($(window).width()) /2

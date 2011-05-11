@@ -1,6 +1,4 @@
 <messagebundle>
-  <msg name="base_url">http://www.sinsai.info/gadget/</msg>
-  <msg name="ushahidi_url">http://www.sinsai.info/ushahidi/</msg>
   <msg name="report"> Report</msg>
   <msg name="post">Post</msg>
   <msg name="new_comment">New Comments</msg>
