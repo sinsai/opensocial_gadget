@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.2">
+<Document>
+  <name>炊き出しまっぷ</name>
+  <description><![CDATA[
+このマップでは，炊き出しを実施している場所を集めて発信しています。
+
+バーガーとドリンクのマーカーはこれから実施される炊き出しです。他方，青丸で示したものは終了した炊き出しです。
+
+また，これまで作ってきた複数の炊き出しまっぷをまとめて，新たに被災地救援ポータルまっぷ http://goo.gl/CK50m を作成しました。
+
+被災地救援ポータルまっぷでは，炊き出し・食料品・風呂・洗濯・病院・給水所などの様々な地図を，まとめて1枚の地図として見ることができます。
+
+-------
+各県版の地図も随時更新しています。。各県版の地図には避難所の情報も登録しています。
+
+宮城版(Miyagi)　http://ow.ly/4dmEm 
+福島版(Fukushima)　http://ow.ly/4dmBb 
+茨城版(Ibaraki)　http://ow.ly/4dmBu 
+栃木版(Tochigi)　http://ow.ly/4dmCk 
+青森版(Aomori)　http://ow.ly/4dutZ 
+岩手版(Iwate)　http://ow.ly/4duvd 
+山形版(Yamagata)　http://ow.ly/4dEra 
+
+
+【緊急】炊き出しまっぷでは、炊き出し等に関する情報を追加・更新するマップの編集者を募集中です。
+御協力いただける方は，炊き出しまっぷ代表 
+@yamahirowill 宛に次までご連絡下さい。yamahirog[a]gmail.com
+※[a]を@に代えてください。 
+
+※@×××は，twitterのアカウント名です。 
+※できるだけ詳細な日時の記載をしています。 
+
+炊き出しまっぷの情報が利用されているサービス 
+＊被災地生活支援サイト goo.gl/kyuen 
+＊携帯電話での検索 http://goo.gl/Fp7I4 
+＊iPhoneでの検索 http://goo.gl/iX7MQ
+＊ツイッターでの利用　http://goo.gl/1BCMT
+
+]]></description>
+  <NetworkLink>
+    <name>炊き出しまっぷ</name>
+    <Link>
+      <href>http://maps.google.co.jp/maps/ms?ie=UTF8&amp;brcurrent=3,0x5f8a281688bb7435:0x5a71ac24ed513392,0,0x5f8a2815e538e245:0xb1632cc050d2f733&amp;oe=UTF8&amp;hl=ja&amp;msa=0&amp;msid=216614052816461214939.00049e49594f07450fe63&amp;output=kml</href>
+    </Link>
+  </NetworkLink>
+</Document>
+</kml>

@@ -317,20 +317,8 @@ function initMap(){
                 })
             })
         });
-
-    var takidasi = new OpenLayers.Layer.Vector("炊き出しマップ", {
-            strategies: [new OpenLayers.Strategy.Fixed()],
-            protocol: new OpenLayers.Protocol.HTTPOpenSocial({
-                url: "http://maps.google.co.jp/maps/ms?hl=ja&ie=UTF8&brcurrent=3,0x5f8a281688bb7435:0x5a71ac24ed513392,1,0x5f8a2815e538e245:0xb1632cc050d2f733&t=h&msa=0&output=nl&msid=216614052816461214939.00049e49594f07450fe63",
-                format: new OpenLayers.Format.KML({
-                    extractStyles: true, 
-                    extractAttributes: true,
-                    maxDepth: 2
-                })
-            })
-        });
-
-    map.addLayers([osm,virtualearth_hybrid,google_hybrid,kml,takidasi]);
+        
+    map.addLayers([osm,virtualearth_hybrid,google_hybrid,kml]);
     map.addControl(new OpenLayers.Control.LargeLayerSwitcher());
     map.addControl(new OpenLayers.Control.Navigation());
     map.addControl(new OpenLayers.Control.PanZoomBar());
