@@ -68,7 +68,7 @@ $(function($,data) {
             <div repeat="${comments}" class="comments">
                 <div class="comment">
                     <span class="date">${Cur.comment_date} </span>
-                    <a href="__MSG_ushahidi_url__reports/view/${Cur.incident_id}" class="dialog">${Cur.comment_description }
+                    <a href="__MSG_ushahidi_url__reports/view/${Cur.incident_id}" class="dialog" target="_blank">${Cur.comment_description }
                    </a><br>
                 </div>
             </div>
