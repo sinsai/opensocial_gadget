@@ -65,7 +65,7 @@ if(is_mobile()){
     header("Location: http://".$_SERVER["SERVER_NAME"]."/ushahidi/mobile");
 }else if(is_keitai()){
     header("Location: http://".$_SERVER["SERVER_NAME"]."/ushahidi/keitai");
-else{
+}else{
 ?>
 <!DOCTYPE html>
 <html>
