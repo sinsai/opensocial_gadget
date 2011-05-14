@@ -18,7 +18,7 @@
 			Shot QR code 
 			or access sinsai.info from your mobile phone
 			You can also use 
-			<a href="https://market.android.com/details?id=sinsai.info.android.app&amp;feature=search_result">Android Apps</a>
+			<a href="https://market.android.com/details?id=sinsai.info.android.app&amp;feature=search_result" target="_blank">Android Apps</a>
   </msg>
   <msg name="address">Address</msg>
   <msg name="keyword">Keyword</msg>
@@ -28,9 +28,9 @@
   <msg name="map">Map</msg>
   <msg name="next">Next</msg>
   <msg name="footer"> 
-					<li><a class="item1 dialog" href="http://www.sinsai.info/ushahidi/page/index/9">About US</a></li> 
-					<li><a class="dialog" href="http://www.sinsai.info/ushahidi/contact">Contact US</a></li> 
-					<li><a class="dialog" href="https://spreadsheets.google.com/viewform?formkey=dGlnajlENUtFOFZnWlN2XzlqbklickE6MQ">Provide feedback</a></li>
+					<li><a class="item1 dialog" href="http://www.sinsai.info/ushahidi/page/index/9" target="_blank">About US</a></li> 
+					<li><a class="dialog" target="_blank" href="http://www.sinsai.info/ushahidi/contact">Contact US</a></li> 
+					<li><a class="dialog" target="_blank" href="https://spreadsheets.google.com/viewform?formkey=dGlnajlENUtFOFZnWlN2XzlqbklickE6MQ">Provide feedback</a></li>
 					<li><a href="http://www.sinsai.info/ushahidi/main" target="_blank">Previous Version UI</a></li>
   </msg>
 </messagebundle> 

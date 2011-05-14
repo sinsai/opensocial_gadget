@@ -6,7 +6,7 @@
   <msg name="how_to_post">
         レポート（情報）を投稿する方法
         <ol>
-            <li>地図をクリックするか、<a href="http://www.sinsai.info/ushahidi/reports/submit/" class="dialog">こちらのフォームから投稿</a></li>
+            <li>地図をクリックするか、<a href="http://www.sinsai.info/ushahidi/reports/submit/" class="dialog" target="_blank">こちらのフォームから投稿</a></li>
                 <li>次のアドレスにメールで投稿  <a href="mailto:report@sinsai.info">report@sinsai.info</a></li>
                 <li>Twitterから投稿。次のハッシュタグをつけてツイート  <strong>jishin</strong> or <strong>j_j_helpme</strong> or <strong>hinan</strong> or <strong>anpi</strong> or <strong>311care</strong></li>
                         </ol>
@@ -15,7 +15,7 @@
 			<h3>モバイルサイト＆アプリ</h3>
 			モバイル端末からQRコードを読み取るか
 			sinsai.infoにアクセスしてください。
-			<a href="https://market.android.com/details?id=sinsai.info.android.app&amp;feature=search_result">Androidアプリ</a>でもご利用できます。
+			<a href="https://market.android.com/details?id=sinsai.info.android.app&amp;feature=search_result" target="_blank">Androidアプリ</a>でもご利用できます。
   </msg>
   <msg name="address">住所</msg>
   <msg name="keyword">キーワード</msg>
@@ -25,8 +25,8 @@
   <msg name="map">地図</msg>
   <msg name="next">次へ</msg>
   <msg name="footer">
-					<li><a class="item1 dialog" href="http://www.sinsai.info/ushahidi/page/index/9">運営団体・協力企業・団体<!--助ける方法--></a></li> 
-					<li><a class="dialog" href="http://www.sinsai.info/ushahidi/contact">お問い合わせ</a></li> 
+					<li><a class="item1 dialog" href="http://www.sinsai.info/ushahidi/page/index/9" target="_blank">運営団体・協力企業・団体<!--助ける方法--></a></li> 
+					<li><a class="dialog" href="http://www.sinsai.info/ushahidi/contact" target="_blank">お問い合わせ</a></li> 
 					<li><a class="dialog" href="https://spreadsheets.google.com/viewform?formkey=dGlnajlENUtFOFZnWlN2XzlqbklickE6MQ">サイトの問題点や機能改善などの報告</a></li>
 					<li><a href="http://www.sinsai.info/ushahidi/main" target="_blank">旧UI</a></li>
   </msg>
