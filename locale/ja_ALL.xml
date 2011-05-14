@@ -27,7 +27,8 @@
   <msg name="footer">
 					<li><a class="item1 dialog" href="http://www.sinsai.info/ushahidi/page/index/9" target="_blank">運営団体・協力企業・団体<!--助ける方法--></a></li> 
 					<li><a class="dialog" href="http://www.sinsai.info/ushahidi/contact" target="_blank">お問い合わせ</a></li> 
-					<li><a class="dialog" href="https://spreadsheets.google.com/viewform?formkey=dGlnajlENUtFOFZnWlN2XzlqbklickE6MQ">サイトの問題点や機能改善などの報告</a></li>
+					<li><a class="dialog" href="https://spreadsheets.google.com/viewform?formkey=dGlnajlENUtFOFZnWlN2XzlqbklickE6MQ" target="_blank">サイトの問題点や機能改善などの報告</a></li>
+					<li><a class="dialog" href="http://www.sinsai.info/ushahidi/page/index/6" target="_blank">サイト制作ボランティア募集</a></li>
 					<li><a href="http://www.sinsai.info/ushahidi/main" target="_blank">旧UI</a></li>
   </msg>
 </messagebundle> 
